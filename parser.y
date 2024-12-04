@@ -7,6 +7,8 @@
 extern int yylex();
 void yyerror(const char* s);
 
+extern int yylineno;
+extern char *yytext;
 tree* tr = NULL;
 %}
 
@@ -21,16 +23,17 @@ tree* tr = NULL;
     tree* tree;
 }
 
-%token <string> DECLARATION LABEL_VALUE COMMENT
-%token <number> METRIC_VALUE
-%token <integer> TIMESTAMP
-%token OPEN_BRACE CLOSE_BRACE EQUALS COMMA
-
+%token <string> NAME LABEL_VALUE COMMENT
+%token <number> FLOAT_NUMBER
+%token <integer> INTEGER_NUMBER
+%token METRIC_TYPE METRIC_HELP OPEN_BRACE CLOSE_BRACE EQUALS COMMA
 %type <metric> metric
 %type <label> label label_list inner_label_list
 %type <comment> comment
 %type <node> node
 %type <tree> tree
+
+%define parse.error detailed
 
 %%
 
@@ -44,19 +47,11 @@ tree:
     node
     {
         $$ = create_empty_tree();
-        if ($1 -> tp == METRIC_NODE) {
-            add_metric_to_tree(tr, $1 -> body.metric);
-        } else if ($1 -> tp == COMMENT_NODE) {
-            add_comment_to_tree(tr, $1 -> body.comment);
-        }
+        add_node_to_tree($$, $1);
     }
     | node tree
     {
-        if ($1 -> tp == METRIC_NODE) {
-            add_metric_to_tree($2, $1 -> body.metric);
-        } else if ($1 -> tp == COMMENT_NODE) {
-            add_comment_to_tree($2, $1 -> body.comment);
-        }
+        add_node_to_tree($2, $1);
         $$ = $2;
     }
     ;
@@ -72,12 +67,22 @@ node:
     ;
 
 metric:
-    DECLARATION label_list METRIC_VALUE TIMESTAMP
+    NAME label_list FLOAT_NUMBER INTEGER_NUMBER
     {
         $$ = create_metric($1, $2, $3, $4);
     }
     |
-    DECLARATION label_list METRIC_VALUE
+    NAME label_list FLOAT_NUMBER
+    {
+        $$ = create_metric($1, $2, $3, -1);
+    }
+    |
+    NAME label_list INTEGER_NUMBER INTEGER_NUMBER
+    {
+        $$ = create_metric($1, $2, $3, $4);
+    }
+    |
+    NAME label_list INTEGER_NUMBER
     {
         $$ = create_metric($1, $2, $3, -1);
     }
@@ -114,9 +119,14 @@ inner_label_list:
     ;
 
 label:
-    DECLARATION EQUALS LABEL_VALUE
+    NAME EQUALS LABEL_VALUE
     {
         $$ = create_label($1, $3);
     }
     ;
 %%
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Syntax error at line %d: %s near '%s'\n", yylineno, s, yytext);
+    exit(EXIT_FAILURE);
+}

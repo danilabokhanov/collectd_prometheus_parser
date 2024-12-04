@@ -46,6 +46,7 @@ node *create_metric_node(metric *metric) {
   node->tp = METRIC_NODE;
   node->body.metric = metric;
   node->next = NULL;
+  return node;
 }
 
 node *create_comment_node(comment *comment) {
@@ -57,6 +58,7 @@ node *create_comment_node(comment *comment) {
   node->tp = COMMENT_NODE;
   node->body.comment = comment;
   node->next = NULL;
+  return node;
 }
 
 comment *create_comment(const char *text) {
@@ -75,47 +77,29 @@ tree *create_empty_tree() {
   return tree;
 }
 
-void add_metric_to_tree(tree *tree, metric *metric) {
-  node *node = malloc(sizeof(*node));
-  if (!node) {
-    perror("Couldn't allocate memory for metric node\n");
-    exit(EXIT_FAILURE);
-  }
-  node->tp = METRIC_NODE;
-  node->body.metric = metric;
-  node->next = tree->begin;
-  tree->begin = node;
-}
-
-void add_comment_to_tree(tree *tree, comment *comment) {
-  node *node = malloc(sizeof(*node));
-  if (!node) {
-    perror("Couldn't allocate memory for metric node\n");
-    exit(EXIT_FAILURE);
-  }
-  node->tp = COMMENT_NODE;
-  node->body.comment = comment;
+void add_node_to_tree(tree *tree, node *node) {
   node->next = tree->begin;
   tree->begin = node;
 }
 
 void print_label(label *label) {
-  printf("label name: %s, label value: %s", label->name, label->value);
+  printf("label name: %s, label value: %s\n", label->name, label->value);
 }
 
 void print_metric(metric *metric) {
-  printf("Metric name:%s\n", metric->name);
+  printf("Metric name: %s\n", metric->name);
   label *cur_label = metric->labels;
   while (cur_label) {
     print_label(cur_label);
     cur_label = cur_label->next;
   }
-  printf("Metric value: %s\n", metric->name);
-  printf("\n");
-  printf("Metric timestamp %ld\n", metric->timestamp);
+  printf("Metric value: %f\n", metric->value);
+  printf("Metric timestamp: %ld\n\n", metric->timestamp);
 }
 
-void print_comment(comment *comment) { printf("Comment: %s\n", comment->text); }
+void print_comment(comment *comment) {
+  printf("Comment: %s\n\n", comment->text);
+}
 
 void print_tree(tree *tree) {
   node *cur_node = tree->begin;
@@ -130,12 +114,17 @@ void print_tree(tree *tree) {
       break;
     }
     }
+    cur_node = cur_node->next;
   }
 }
 
 void delete_label(label *label) {
+  if (!label) {
+    return;
+  }
   free(label->name);
   free(label->value);
+  delete_label(label->next);
   free(label);
 }
 

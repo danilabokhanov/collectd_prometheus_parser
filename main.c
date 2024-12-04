@@ -1,20 +1,23 @@
 #include "ast.h"
 #include "parser.tab.h"
 #include <stdio.h>
-#include <stdlib.h>
 
-int yyparse();
+int yyparse(void);
+
 extern tree *tr;
+extern FILE *yyin;
 
-void yyerror(const char *s) { fprintf(stderr, "Error: %s\n", s); }
-
-int main() {
+int main(int argc, char *argv[]) {
   if (yyparse() == 0) {
-    printf("Parsing completed successfully.\n");
+    printf("Parsing completed successfully.\n\n");
     print_tree(tr);
     delete_tree(tr);
   } else {
     perror("Failed while parsing\n");
+  }
+
+  if (argc > 1) {
+    fclose(yyin);
   }
   return 0;
 }

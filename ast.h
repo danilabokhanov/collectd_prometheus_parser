@@ -42,8 +42,7 @@ node *create_metric_node(metric *metric);
 node *create_comment_node(comment *comment);
 
 tree *create_empty_tree();
-void add_metric_to_tree(tree *tree, metric *metric);
-void add_comment_to_tree(tree *tree, comment *comment);
+void add_node_to_tree(tree *tree, node *node);
 void print_tree(tree *tree);
 void delete_tree(tree *tree);
 
