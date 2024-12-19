@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include "ast.h"
 
 extern int yylex();
@@ -16,20 +17,29 @@ tree* tr = NULL;
     char* string;
     double number;
     int64_t integer;
+    enum metric_type metric_type;
     metric* metric;
     label* label;
+    timestamp* timestamp;
     comment* comment;
+    type* type;
+    help* help;
     node* node;
     tree* tree;
 }
 
-%token <string> NAME LABEL_VALUE COMMENT
+%token <string> NAME LABEL_VALUE COMMENT METRIC_HELP
 %token <number> FLOAT_NUMBER
 %token <integer> INTEGER_NUMBER
-%token METRIC_TYPE METRIC_HELP OPEN_BRACE CLOSE_BRACE EQUALS COMMA
+%token <metric_type> METRIC_TYPE
+%token TYPE_DECLARATION HELP_DECLARATION OPEN_BRACE CLOSE_BRACE EQUALS COMMA
+%type <number> numeric_value
+%type <timestamp> timestamp
 %type <metric> metric
 %type <label> label label_list inner_label_list
 %type <comment> comment
+%type <type> type
+%type <help> help
 %type <node> node
 %type <tree> tree
 
@@ -64,32 +74,45 @@ node:
     | comment {
         $$ = create_comment_node($1);
     }
+    | type {
+        $$ = create_type_node($1);
+    }
+    | help {
+        $$ = create_help_node($1);
+    }
     ;
 
 metric:
-    NAME label_list FLOAT_NUMBER INTEGER_NUMBER
+    NAME label_list numeric_value timestamp
     {
         $$ = create_metric($1, $2, $3, $4);
     }
-    |
-    NAME label_list FLOAT_NUMBER
+    ;
+
+numeric_value:
+    FLOAT_NUMBER
     {
-        $$ = create_metric($1, $2, $3, -1);
+        $$ = $1;
+    }
+    | INTEGER_NUMBER
+    {
+        $$ = $1;
+    }
+    ;
+
+timestamp:
+    INTEGER_NUMBER
+    {
+        $$ = create_value_timestamp($1);
     }
     |
-    NAME label_list INTEGER_NUMBER INTEGER_NUMBER
     {
-        $$ = create_metric($1, $2, $3, $4);
-    }
-    |
-    NAME label_list INTEGER_NUMBER
-    {
-        $$ = create_metric($1, $2, $3, -1);
+        $$ = create_empty_timestamp();
     }
     ;
 
 comment:
-    COMMENT
+   COMMENT
     {
         $$ = create_comment($1);
     }
@@ -104,6 +127,7 @@ label_list:
     {
         $$ = NULL;
     }
+    ;
 
 inner_label_list:
     label {
@@ -124,6 +148,17 @@ label:
         $$ = create_label($1, $3);
     }
     ;
+
+type:
+    TYPE_DECLARATION NAME METRIC_TYPE {
+        $$ = create_type($2, $3);
+    }
+
+help:
+    HELP_DECLARATION NAME METRIC_HELP {
+        $$ = create_help($2, $3);
+    }
+
 %%
 
 void yyerror(const char *s) {
