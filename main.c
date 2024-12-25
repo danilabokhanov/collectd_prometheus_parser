@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     print_tree(tr);
     delete_tree(tr);
   } else {
-    perror("Failed while parsing\n");
+    printf("Failed while parsing\n");
   }
 
   if (argc > 1) {

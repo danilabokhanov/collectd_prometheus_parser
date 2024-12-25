@@ -163,5 +163,4 @@ help:
 
 void yyerror(const char *s) {
     fprintf(stderr, "Syntax error at line %d: %s near '%s'\n", yylineno, s, yytext);
-    exit(EXIT_FAILURE);
 }
