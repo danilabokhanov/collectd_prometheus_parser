@@ -149,6 +149,8 @@ void add_node_to_tree(tree *tree, node *node) {
   tree->begin = node;
 }
 
+char *get_str_with_escaped_chars(char *text) { char *iter = text; }
+
 void print_label(label *label) {
   printf("label name: %s, label value: %s\n", label->name, label->value);
 }
