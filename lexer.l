@@ -7,6 +7,15 @@
 #include <stdbool.h>
 #include <math.h>
 
+static YY_BUFFER_STATE lexer_buffer;
+
+void set_lexer_buffer(const char* str) {
+    if (lexer_buffer) {
+        yy_delete_buffer(lexer_buffer);
+    }
+    lexer_buffer = yy_scan_string(str);
+    yy_switch_to_buffer(lexer_buffer);
+}
 
 int lexer_error(const char* s, int status_code) {
     fprintf(stderr, "Unrecognized token at line %d: %s", yylineno, s);
