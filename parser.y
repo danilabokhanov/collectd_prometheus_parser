@@ -10,22 +10,23 @@ void yyerror(const char* s);
 
 extern int yylineno;
 extern char *yytext;
-tree* tr = NULL;
+pr_item_list_t* pr_items = NULL;
+
 %}
 
 %union {
     char* string;
     double number;
     int64_t integer;
-    enum metric_type metric_type;
-    metric* metric;
-    label* label;
-    timestamp* timestamp;
-    comment* comment;
-    type* type;
-    help* help;
-    node* node;
-    tree* tree;
+    pr_metric_type_t metric_type;
+    pr_metric_entry_t* metric;
+    pr_label_t* label;
+    pr_timestamp_t* timestamp;
+    pr_comment_entry_t* comment;
+    pr_type_entry_t* type;
+    pr_help_entry_t* help;
+    pr_entry_t* entry;
+    pr_item_list_t* item_list;
 }
 
 %token <string> NAME LABEL_VALUE COMMENT METRIC_HELP
@@ -40,52 +41,54 @@ tree* tr = NULL;
 %type <comment> comment
 %type <type> type
 %type <help> help
-%type <node> node
-%type <tree> tree
+%type <entry> entry
+%type <item_list> item_list
 
 %define parse.error detailed
 
 %%
 
 input:
-    tree {
-        tr = $1;
+    item_list {
+        pr_items = $1;
     }
     ;
 
-tree:
-    node
+item_list :
+    entry
     {
-        $$ = create_empty_tree();
-        add_node_to_tree($$, $1);
+        $$ = pr_create_item_list();
+        pr_add_entry_to_item_list($$, $1);
+        pr_delete_entry($1);
     }
-    | node tree
+    | entry item_list
     {
-        add_node_to_tree($2, $1);
+        pr_add_entry_to_item_list($2, $1);
         $$ = $2;
+        pr_delete_entry($1);
     }
     ;
 
-node:
+entry:
     metric
     {
-        $$ = create_metric_node($1);
+        $$ = pr_create_entry_from_metric($1);
     }
     | comment {
-        $$ = create_comment_node($1);
+        $$ = pr_create_entry_from_comment($1);
     }
     | type {
-        $$ = create_type_node($1);
+        $$ = pr_create_entry_from_type($1);
     }
     | help {
-        $$ = create_help_node($1);
+        $$ = pr_create_entry_from_help($1);
     }
     ;
 
 metric:
     NAME label_list numeric_value timestamp
     {
-        $$ = create_metric($1, $2, $3, $4);
+        $$ = pr_create_metric_entry($1, $2, $3, $4);
     }
     ;
 
@@ -103,18 +106,18 @@ numeric_value:
 timestamp:
     INTEGER_NUMBER
     {
-        $$ = create_value_timestamp($1);
+        $$ = pr_create_value_timestamp($1);
     }
     |
     {
-        $$ = create_empty_timestamp();
+        $$ = pr_create_empty_timestamp();
     }
     ;
 
 comment:
    COMMENT
     {
-        $$ = create_comment($1);
+        $$ = pr_create_comment_entry($1);
     }
     ;
 
@@ -134,7 +137,7 @@ inner_label_list:
         $$ = $1;
     }
     | label COMMA inner_label_list {
-        $$ =  add_label_to_list($3, $1);
+        $$ = pr_add_label_to_list($3, $1);
     }
     |
     {
@@ -145,18 +148,18 @@ inner_label_list:
 label:
     NAME EQUALS LABEL_VALUE
     {
-        $$ = create_label($1, $3);
+        $$ = pr_create_label($1, $3);
     }
     ;
 
 type:
     TYPE_DECLARATION NAME METRIC_TYPE {
-        $$ = create_type($2, $3);
+        $$ = pr_create_type_entry($2, $3);
     }
 
 help:
     HELP_DECLARATION NAME METRIC_HELP {
-        $$ = create_help($2, $3);
+        $$ = pr_create_help_entry($2, $3);
     }
 
 %%

@@ -4,71 +4,110 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef struct label {
+typedef enum { COUNTER, GAUGE, HISTOGRAM, SUMMARY, UNTYPED } pr_metric_type_t;
+
+typedef enum {
+  METRIC_ENTRY,
+  COMMENT_ENTRY,
+  TYPE_ENTRY,
+  HELP_ENTRY
+} pr_entry_type_t;
+
+typedef struct pr_label_s {
   char *name;
   char *value;
-  struct label *next;
-} label;
+  struct pr_label_s *next;
+} pr_label_t;
 
-enum metric_type { COUNTER, GAUGE, HISTOGRAM, SUMMARY, UNTYPED };
-
-typedef struct timestamp {
+typedef struct pr_timestamp_s {
   bool has_value;
   int64_t value;
-} timestamp;
+} pr_timestamp_t;
 
-typedef struct metric {
+typedef struct pr_metric_entry_s {
   char *name;
-  label *labels;
+  pr_label_t *labels;
   double value;
-  timestamp *timestamp;
-} metric;
+  pr_timestamp_t *timestamp;
+} pr_metric_entry_t;
 
-typedef struct comment {
+typedef struct pr_comment_entry_s {
   char *text;
-} comment;
+} pr_comment_entry_t;
 
-typedef struct type {
+typedef struct pr_type_entry_s {
   char *name;
-  enum metric_type tp;
-} type;
+  pr_metric_type_t tp;
+} pr_type_entry_t;
 
-typedef struct help {
+typedef struct pr_help_entry_s {
   char *name;
   char *hint;
-} help;
+} pr_help_entry_t;
 
-typedef struct node {
-  enum { METRIC_NODE, COMMENT_NODE, TYPE_NODE, HELP_NODE } tp;
+typedef struct pr_entry_s {
+  pr_entry_type_t tp;
   union {
-    metric *metric;
-    comment *comment;
-    type *type;
-    help *help;
+    pr_metric_entry_t *metric;
+    pr_comment_entry_t *comment;
+    pr_type_entry_t *type;
+    pr_help_entry_t *help;
   } body;
-  struct node *next;
-} node;
+} pr_entry_t;
 
-typedef struct tree {
-  node *begin;
-} tree;
+typedef struct pr_item_s pr_item_t;
 
-label *create_label(const char *name, const char *value);
-timestamp *create_empty_timestamp();
-timestamp *create_value_timestamp(int64_t value);
-label *add_label_to_list(label *list, label *label);
-metric *create_metric(const char *name, label *labels, double value,
-                      timestamp *timestamp);
-comment *create_comment(const char *text);
-type *create_type(const char *name, enum metric_type tp);
-help *create_help(const char *name, const char *hint);
-node *create_metric_node(metric *metric);
-node *create_comment_node(comment *comment);
-node *create_type_node(type *node);
-node *create_help_node(help *help);
-tree *create_empty_tree();
-void add_node_to_tree(tree *tree, node *node);
-void print_tree(tree *tree);
-void delete_tree(tree *tree);
+typedef struct pr_metric_s pr_metric_t;
+
+typedef struct pr_metric_s {
+  pr_label_t *labels;
+  double value;
+  pr_timestamp_t *timestamp;
+  pr_metric_t *next;
+} pr_metric_t;
+
+typedef struct pr_metric_family_s {
+  char *name;
+  char *help;
+  pr_metric_type_t tp;
+  pr_metric_t *metric_list;
+} pr_metric_family_t;
+
+typedef pr_comment_entry_t pr_comment_t;
+
+typedef struct pr_item_s {
+  enum { METRIC_FAMILY_ITEM, COMMENT_ITEM } tp;
+  union {
+    pr_metric_family_t *metric_family;
+    pr_comment_t *comment;
+  } body;
+  pr_item_t *next;
+} pr_item_t;
+
+typedef struct pr_item_list_s {
+  pr_item_t *begin;
+} pr_item_list_t;
+
+pr_label_t *pr_create_label(char *name, char *value);
+pr_timestamp_t *pr_create_empty_timestamp();
+pr_timestamp_t *pr_create_value_timestamp(int64_t value);
+pr_label_t *pr_add_label_to_list(pr_label_t *list, pr_label_t *label);
+pr_metric_entry_t *pr_create_metric_entry(char *name, pr_label_t *labels,
+                                          double value,
+                                          pr_timestamp_t *timestamp);
+pr_comment_entry_t *pr_create_comment_entry(char *text);
+pr_type_entry_t *pr_create_type_entry(char *name, pr_metric_type_t tp);
+pr_help_entry_t *pr_create_help_entry(char *name, char *hint);
+pr_entry_t *pr_create_entry_from_metric(pr_metric_entry_t *metric);
+pr_entry_t *pr_create_entry_from_comment(pr_comment_entry_t *comment);
+pr_entry_t *pr_create_entry_from_type(pr_type_entry_t *node);
+pr_entry_t *pr_create_entry_from_help(pr_help_entry_t *help);
+pr_item_t *pr_create_metric_family_item();
+pr_item_t *pr_create_comment_item(char *text);
+pr_item_list_t *pr_create_item_list();
+void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry);
+
+void pr_delete_entry(pr_entry_t *entry);
+void pr_delete_item_list(pr_item_list_t *item_list);
 
 #endif

@@ -1,4 +1,5 @@
 #include "ast.h"
+#include "log.h"
 #include "parser.tab.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +7,7 @@
 extern int yyparse(void);
 extern void set_lexer_buffer(const char *str);
 
-extern tree *tr;
+extern pr_item_list_t *pr_items;
 
 char *read_str_from_file(const char *filename) {
   FILE *file = fopen(filename, "r");
@@ -29,12 +30,12 @@ char *read_str_from_file(const char *filename) {
 }
 
 int main(int argc, char *argv[]) {
-  const char *lexer_input = read_str_from_file(argv[1]);
+  const char *lexer_input = read_str_from_file("test_metric.in");
   set_lexer_buffer(lexer_input);
   if (yyparse() == 0) {
     printf("Parsing completed successfully.\n\n");
-    print_tree(tr);
-    delete_tree(tr);
+    pr_print_item_list(pr_items);
+    pr_delete_item_list(pr_items);
   } else {
     printf("Failed while parsing\n");
   }
