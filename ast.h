@@ -4,14 +4,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum { COUNTER, GAUGE, HISTOGRAM, SUMMARY, UNTYPED } pr_metric_type_t;
+typedef enum { PR_COUNTER, PR_GAUGE, PR_HISTOGRAM, PR_SUMMARY, PR_UNTYPED } pr_metric_type_t;
 
 typedef enum {
-  METRIC_ENTRY,
-  COMMENT_ENTRY,
-  TYPE_ENTRY,
-  HELP_ENTRY
+  PR_METRIC_ENTRY,
+  PR_COMMENT_ENTRY,
+  PR_TYPE_ENTRY,
+  PR_HELP_ENTRY
 } pr_entry_type_t;
+
+typedef enum { PR_METRIC_FAMILY_ITEM, PR_COMMENT_ITEM } pr_item_type_t;
 
 typedef struct pr_label_s {
   char *name;
@@ -76,7 +78,7 @@ typedef struct pr_metric_family_s {
 typedef pr_comment_entry_t pr_comment_t;
 
 typedef struct pr_item_s {
-  enum { METRIC_FAMILY_ITEM, COMMENT_ITEM } tp;
+  pr_item_type_t tp;
   union {
     pr_metric_family_t *metric_family;
     pr_comment_t *comment;

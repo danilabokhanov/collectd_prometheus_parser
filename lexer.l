@@ -111,35 +111,35 @@ NaN {
 
 <TYPE>"counter" {
     BEGIN(INITIAL);
-    yylval.metric_type = COUNTER;
+    yylval.metric_type = PR_COUNTER;
     perror("METRIC_TYPE");
     return METRIC_TYPE;
 }
 
 <TYPE>"gauge" {
     BEGIN(INITIAL);
-    yylval.metric_type = GAUGE;
+    yylval.metric_type = PR_GAUGE;
     perror("METRIC_TYPE");
     return METRIC_TYPE;
 }
 
 <TYPE>"histogram" {
     BEGIN(INITIAL);
-    yylval.metric_type = HISTOGRAM;
+    yylval.metric_type = PR_HISTOGRAM;
     perror("METRIC_TYPE");
     return METRIC_TYPE;
 }
 
 <TYPE>"summary" {
     BEGIN(INITIAL);
-    yylval.metric_type = SUMMARY;
+    yylval.metric_type = PR_SUMMARY;
     perror("METRIC_TYPE");
     return METRIC_TYPE;
 }
 
 <TYPE>"untyped" {
     BEGIN(INITIAL);
-    yylval.metric_type = UNTYPED;
+    yylval.metric_type = PR_UNTYPED;
     perror("METRIC_TYPE");
     return METRIC_TYPE;
 }

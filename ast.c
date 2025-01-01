@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+const char * PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
+
 pr_label_t *pr_create_label(char *name, char *value) {
   pr_label_t *label = malloc(sizeof(*label));
   if (!label) {
@@ -50,7 +52,7 @@ pr_entry_t *pr_create_entry_from_metric(pr_metric_entry_t *metric) {
     perror("Couldn't allocate memory for metric entry\n");
     exit(EXIT_FAILURE);
   }
-  entry->tp = METRIC_ENTRY;
+  entry->tp = PR_METRIC_ENTRY;
   entry->body.metric = metric;
   return entry;
 }
@@ -61,7 +63,7 @@ pr_entry_t *pr_create_entry_from_comment(pr_comment_entry_t *comment) {
     perror("Couldn't allocate memory for comment entry\n");
     exit(EXIT_FAILURE);
   }
-  entry->tp = COMMENT_ENTRY;
+  entry->tp = PR_COMMENT_ENTRY;
   entry->body.comment = comment;
   return entry;
 }
@@ -72,7 +74,7 @@ pr_entry_t *pr_create_entry_from_type(pr_type_entry_t *type) {
     perror("Couldn't allocate memory for type entry\n");
     exit(EXIT_FAILURE);
   }
-  entry->tp = TYPE_ENTRY;
+  entry->tp = PR_TYPE_ENTRY;
   entry->body.type = type;
   return entry;
 }
@@ -83,7 +85,7 @@ pr_entry_t *pr_create_entry_from_help(pr_help_entry_t *help) {
     perror("Couldn't allocate memory for help entry\n");
     exit(EXIT_FAILURE);
   }
-  entry->tp = HELP_ENTRY;
+  entry->tp = PR_HELP_ENTRY;
   entry->body.help = help;
   return entry;
 }
@@ -158,9 +160,9 @@ pr_item_t *pr_create_metric_family_item() {
   }
   metric_family->name = NULL;
   metric_family->help = NULL;
-  metric_family->tp = UNTYPED;
+  metric_family->tp = PR_UNTYPED;
   metric_family->metric_list = NULL;
-  item->tp = METRIC_FAMILY_ITEM;
+  item->tp = PR_METRIC_FAMILY_ITEM;
   item->body.metric_family = metric_family;
   item->next = NULL;
   return item;
@@ -174,7 +176,7 @@ pr_item_t *pr_create_comment_item(char *text) {
   }
   pr_comment_t *comment = malloc(sizeof(*comment));
   comment->text = strdup(text);
-  item->tp = COMMENT_ITEM;
+  item->tp = PR_COMMENT_ITEM;
   item->body.comment = comment;
   item->next = NULL;
   return item;
@@ -182,7 +184,7 @@ pr_item_t *pr_create_comment_item(char *text) {
 
 char *pr_get_cur_family_name(pr_item_list_t *item_list) {
   pr_item_t *item = item_list->begin;
-  if (item && item->tp == METRIC_FAMILY_ITEM) {
+  if (item && item->tp == PR_METRIC_FAMILY_ITEM) {
     return item->body.metric_family->name;
   }
   return NULL;
@@ -238,16 +240,37 @@ void pr_add_metric_to_metric_family(pr_metric_family_t *metric_family,
   metric_family->metric_list = metric;
 }
 
+int pr_compare_entries_names(const char* name_x, const char* name_y) {
+  for (size_t suff_x_id = 0; suff_x_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES); suff_x_id++) {
+    size_t len_suff_x = strlen(PR_METRIC_SUFFIXES[suff_x_id]);
+    size_t len_x = strlen(name_x);
+    if (len_suff_x > len_x || strcmp(name_x + len_x - len_suff_x, PR_METRIC_SUFFIXES[suff_x_id])) {
+      continue;
+    }
+    for (size_t suff_y_id = 0; suff_y_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES); suff_y_id++) {
+      size_t len_suff_y = strlen(PR_METRIC_SUFFIXES[suff_y_id]);
+      size_t len_y = strlen(name_y);
+      if (len_suff_y > len_y || strcmp(name_y + len_y - len_suff_y, PR_METRIC_SUFFIXES[suff_y_id])) {
+        continue;
+      }
+      if (len_x - len_suff_x == len_y - len_suff_y && !strncmp(name_x, name_y, len_x - len_suff_x)) {
+        return 1;
+      }
+    }
+  }
+  return 0;
+}
+
 void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
-  if (entry->tp != COMMENT_ENTRY) {
+  if (entry->tp != PR_COMMENT_ENTRY) {
     char *metric_family_name = pr_get_cur_family_name(item_list);
-    if (!metric_family_name || strcmp(metric_family_name, entry->body.metric->name)) {
+    if (!metric_family_name || !pr_compare_entries_names(metric_family_name, entry->body.metric->name)) {
       pr_item_t *new_metric_family = pr_create_metric_family_item();
       pr_add_item_to_item_list(item_list, new_metric_family);
     }
     pr_metric_family_t *metric_family = item_list->begin->body.metric_family;
     switch (entry->tp) {
-    case (METRIC_ENTRY): {
+    case (PR_METRIC_ENTRY): {
       pr_metric_entry_t *metric_entry = entry->body.metric;
       if (!metric_family->name) {
         metric_family->name = strdup(metric_entry->name);
@@ -256,7 +279,7 @@ void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
       pr_add_metric_to_metric_family(metric_family, new_metric);
       break;
     }
-    case (TYPE_ENTRY): {
+    case (PR_TYPE_ENTRY): {
       pr_type_entry_t *type_entry = entry->body.type;
       if (!metric_family->name) {
         metric_family->name = strdup(type_entry->name);
@@ -264,7 +287,7 @@ void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
       metric_family->tp = type_entry->tp;
       break;
     }
-    case (HELP_ENTRY): {
+    case (PR_HELP_ENTRY): {
       pr_help_entry_t *help_entry = entry->body.help;
       if (!metric_family->name) {
         metric_family->name = strdup(help_entry->name);
@@ -274,7 +297,7 @@ void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
       }
       break;
     }
-    case (COMMENT_ENTRY): {
+    case (PR_COMMENT_ENTRY): {
       break;
     }
     }
@@ -325,11 +348,11 @@ void pr_delete_comment(pr_comment_t *comment) {
 
 void pr_delete_item(pr_item_t *item) {
   switch (item->tp) {
-  case (METRIC_FAMILY_ITEM): {
+  case (PR_METRIC_FAMILY_ITEM): {
     pr_delete_metric_family(item->body.metric_family);
     break;
   }
-  case (COMMENT_ITEM): {
+  case (PR_COMMENT_ITEM): {
     pr_delete_comment(item->body.comment);
     break;
   }
@@ -365,19 +388,19 @@ void pr_delete_help_entry(pr_help_entry_t *help) {
 
 void pr_delete_entry(pr_entry_t *entry) {
   switch (entry->tp) {
-  case (METRIC_ENTRY): {
+  case (PR_METRIC_ENTRY): {
     pr_delete_metric_entry(entry->body.metric);
     break;
   }
-  case (COMMENT_ENTRY): {
+  case (PR_COMMENT_ENTRY): {
     pr_delete_comment_entry(entry->body.comment);
     break;
   }
-  case (TYPE_ENTRY): {
+  case (PR_TYPE_ENTRY): {
     pr_delete_type_entry(entry->body.type);
     break;
   }
-  case (HELP_ENTRY): {
+  case (PR_HELP_ENTRY): {
     pr_delete_help_entry(entry->body.help);
     break;
   }

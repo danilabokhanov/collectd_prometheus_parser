@@ -32,23 +32,23 @@ void pr_print_comment_entry(pr_comment_entry_t *comment) {
 void pr_print_type_entry(pr_type_entry_t *type) {
   printf("Type name: %s\n", type->name);
   switch (type->tp) {
-  case (COUNTER): {
+  case (PR_COUNTER): {
     printf("Type value: counter\n\n");
     break;
   }
-  case (GAUGE): {
+  case (PR_GAUGE): {
     printf("Type value: gauge\n\n");
     break;
   }
-  case (HISTOGRAM): {
+  case (PR_HISTOGRAM): {
     printf("Type value: histogram\n\n");
     break;
   }
-  case (SUMMARY): {
+  case (PR_SUMMARY): {
     printf("Type value: summary\n\n");
     break;
   }
-  case (UNTYPED): {
+  case (PR_UNTYPED): {
     printf("Type value: untyped\n\n");
     break;
   }
@@ -62,19 +62,19 @@ void pr_print_help_entry(pr_help_entry_t *help) {
 
 void pr_print_entry(pr_entry_t *entry) {
   switch (entry->tp) {
-  case (METRIC_ENTRY): {
+  case (PR_METRIC_ENTRY): {
     pr_print_metric_entry(entry->body.metric);
     break;
   }
-  case (COMMENT_ENTRY): {
+  case (PR_COMMENT_ENTRY): {
     pr_print_comment_entry(entry->body.comment);
     break;
   }
-  case (TYPE_ENTRY): {
+  case (PR_TYPE_ENTRY): {
     pr_print_type_entry(entry->body.type);
     break;
   }
-  case (HELP_ENTRY): {
+  case (PR_HELP_ENTRY): {
     pr_print_help_entry(entry->body.help);
     break;
   }
@@ -102,23 +102,23 @@ void pr_print_metric_family(pr_metric_family_t *metric_family) {
   printf("Metric family item:\n");
   printf("Name: %s\n", metric_family->name);
   switch (metric_family->tp) {
-  case (COUNTER): {
+  case (PR_COUNTER): {
     printf("Type: counter\n");
     break;
   }
-  case (GAUGE): {
+  case (PR_GAUGE): {
     printf("Type: gauge\n");
     break;
   }
-  case (HISTOGRAM): {
+  case (PR_HISTOGRAM): {
     printf("Type: histogram\n");
     break;
   }
-  case (SUMMARY): {
+  case (PR_SUMMARY): {
     printf("Type value: summary\n");
     break;
   }
-  case (UNTYPED): {
+  case (PR_UNTYPED): {
     printf("Type value: untyped\n");
     break;
   }
@@ -135,11 +135,11 @@ void pr_print_comment(pr_comment_t *comment) {
 
 void pr_print_item(pr_item_t *item) {
   switch (item->tp) {
-  case (METRIC_FAMILY_ITEM): {
+  case (PR_METRIC_FAMILY_ITEM): {
     pr_print_metric_family(item->body.metric_family);
     break;
   }
-  case (COMMENT_ITEM): {
+  case (PR_COMMENT_ITEM): {
     pr_print_comment(item->body.comment);
     break;
   }
