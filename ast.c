@@ -158,6 +158,7 @@ pr_item_t *pr_create_metric_family_item() {
   }
   metric_family->name = NULL;
   metric_family->help = NULL;
+  metric_family->tp = UNTYPED;
   metric_family->metric_list = NULL;
   item->tp = METRIC_FAMILY_ITEM;
   item->body.metric_family = metric_family;
@@ -192,7 +193,7 @@ void pr_add_item_to_item_list(pr_item_list_t *item_list, pr_item_t *item) {
   item_list->begin = item;
 }
 
-pr_label_t *copy_label_list(pr_label_t *label_list) {
+pr_label_t *pr_copy_label_list(pr_label_t *label_list) {
   if (!label_list) {
     return NULL;
   }
@@ -203,11 +204,11 @@ pr_label_t *copy_label_list(pr_label_t *label_list) {
   }
   label_list_copy->name = strdup(label_list->name);
   label_list_copy->value = strdup(label_list->value);
-  label_list_copy->next = copy_label_list(label_list->next);
-  return label_list;
+  label_list_copy->next = pr_copy_label_list(label_list->next);
+  return label_list_copy;
 }
 
-pr_timestamp_t *copy_timestamp(pr_timestamp_t *timestamp) {
+pr_timestamp_t *pr_copy_timestamp(pr_timestamp_t *timestamp) {
   pr_timestamp_t *timestamp_copy = malloc(sizeof(*timestamp_copy));
   if (!timestamp_copy) {
     perror("Couldn't allocate memory for label timestamp copy\n");
@@ -224,9 +225,9 @@ pr_metric_t *pr_create_metric_from_entry(pr_metric_entry_t *metric_entry) {
     perror("Couldn't allocate memory for metric\n");
     exit(EXIT_FAILURE);
   }
-  metric->labels = copy_label_list(metric_entry->labels);
+  metric->labels = pr_copy_label_list(metric_entry->labels);
   metric->value = metric_entry->value;
-  metric->timestamp = copy_timestamp(metric_entry->timestamp);
+  metric->timestamp = pr_copy_timestamp(metric_entry->timestamp);
   metric->next = NULL;
   return metric;
 }
@@ -240,7 +241,7 @@ void pr_add_metric_to_metric_family(pr_metric_family_t *metric_family,
 void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
   if (entry->tp != COMMENT_ENTRY) {
     char *metric_family_name = pr_get_cur_family_name(item_list);
-    if (!metric_family_name || metric_family_name != entry->body.metric->name) {
+    if (!metric_family_name || strcmp(metric_family_name, entry->body.metric->name)) {
       pr_item_t *new_metric_family = pr_create_metric_family_item();
       pr_add_item_to_item_list(item_list, new_metric_family);
     }
@@ -300,12 +301,11 @@ void pr_delete_metric(pr_metric_t *metric) {
 }
 
 void pr_delete_metric_list(pr_metric_t *metric_list) {
-  pr_metric_t *cur_metric = metric_list;
-  while (cur_metric) {
-    pr_metric_t *next_metric = cur_metric->next;
-    pr_delete_metric(cur_metric);
-    cur_metric = next_metric;
+  if (!metric_list) {
+    return;
   }
+  pr_delete_metric_list(metric_list->next);
+  pr_delete_metric(metric_list);
 }
 
 void pr_delete_metric_family(pr_metric_family_t *metric_family) {
@@ -327,9 +327,11 @@ void pr_delete_item(pr_item_t *item) {
   switch (item->tp) {
   case (METRIC_FAMILY_ITEM): {
     pr_delete_metric_family(item->body.metric_family);
+    break;
   }
   case (COMMENT_ITEM): {
     pr_delete_comment(item->body.comment);
+    break;
   }
   }
 }
@@ -377,6 +379,7 @@ void pr_delete_entry(pr_entry_t *entry) {
   }
   case (HELP_ENTRY): {
     pr_delete_help_entry(entry->body.help);
+    break;
   }
   }
 }

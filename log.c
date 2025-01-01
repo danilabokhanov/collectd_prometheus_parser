@@ -10,7 +10,7 @@ void pr_print_label(pr_label_t *label) {
 void pr_print_label_list(pr_label_t *label_list) {
   pr_label_t *cur_label = label_list;
   while (cur_label) {
-    pr_print_label_list(cur_label);
+    pr_print_label(cur_label);
     cur_label = cur_label->next;
   }
 }
@@ -76,6 +76,7 @@ void pr_print_entry(pr_entry_t *entry) {
   }
   case (HELP_ENTRY): {
     pr_print_help_entry(entry->body.help);
+    break;
   }
   }
 }
@@ -124,6 +125,7 @@ void pr_print_metric_family(pr_metric_family_t *metric_family) {
   }
   printf("Help: %s\n", metric_family->help);
   pr_print_metric_list(metric_family->metric_list);
+  printf("\n");
 }
 
 void pr_print_comment(pr_comment_t *comment) {
@@ -135,9 +137,11 @@ void pr_print_item(pr_item_t *item) {
   switch (item->tp) {
   case (METRIC_FAMILY_ITEM): {
     pr_print_metric_family(item->body.metric_family);
+    break;
   }
   case (COMMENT_ITEM): {
     pr_print_comment(item->body.comment);
+    break;
   }
   }
 }
