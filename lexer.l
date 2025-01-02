@@ -146,6 +146,9 @@ NaN {
 
 <TYPE>[a-zA-Z_][a-zA-Z0-9_]* {
     yylval.string = strdup(yytext);
+    if (!yylval.string) {
+        return EXIT_FAILURE;
+    }
     perror("NAME");
     perror(yylval.string);
     return NAME;
@@ -159,6 +162,9 @@ NaN {
 <COMMENT_TEXT>[^\n]* {
     BEGIN(INITIAL);
     yylval.string = strndup(yytext + 1, strlen(yytext) - 1);
+    if (!yylval.string) {
+        return EXIT_FAILURE;
+    }
     perror("COMMENT");
     return COMMENT;
 }
@@ -166,6 +172,9 @@ NaN {
 <HELP_NAME>[a-zA-Z_][a-zA-Z0-9_]* {
     BEGIN(HELP_HINT);
     yylval.string = strdup(yytext);
+    if (!yylval.string) {
+        return EXIT_FAILURE;
+    }
     perror("NAME");
     perror(yylval.string);
     return NAME;
@@ -173,7 +182,10 @@ NaN {
 
 <HELP_HINT>[^\n]* {
     BEGIN(INITIAL);
-    yylval.string = strndup(yytext + 1, strlen(yytext) - 1); 
+    yylval.string = strndup(yytext + 1, strlen(yytext) - 1);
+    if (!yylval.string) {
+        return EXIT_FAILURE;
+    }
     perror("METRIC_HELP");
     return METRIC_HELP;
 }
@@ -222,6 +234,9 @@ NaN {
 
 [a-zA-Z_][a-zA-Z0-9_]* {
     yylval.string = strdup(yytext);
+    if (!yylval.string) {
+        return EXIT_FAILURE;
+    }
     perror("NAME");
     perror(yylval.string);
     return NAME;

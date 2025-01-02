@@ -107,7 +107,7 @@ pr_entry_t *pr_create_entry_from_help(pr_help_entry_t *help);
 pr_item_t *pr_create_metric_family_item();
 pr_item_t *pr_create_comment_item(char *text);
 pr_item_list_t *pr_create_item_list();
-void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry);
+int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry);
 
 void pr_delete_entry(pr_entry_t *entry);
 void pr_delete_item_list(pr_item_list_t *item_list);

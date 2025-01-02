@@ -8,8 +8,8 @@ const char * PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
 pr_label_t *pr_create_label(char *name, char *value) {
   pr_label_t *label = malloc(sizeof(*label));
   if (!label) {
-    perror("Couldn't allocate memory for label\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for label\n"); // ERROR LEVEL
+    return NULL;
   }
   label->name = name;
   label->value = value;
@@ -20,8 +20,8 @@ pr_label_t *pr_create_label(char *name, char *value) {
 pr_timestamp_t *pr_create_empty_timestamp() {
   pr_timestamp_t *timestamp = malloc(sizeof(*timestamp));
   if (!timestamp) {
-    perror("Couldn't allocate memory for timestamp\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for timestamp\n"); // ERROR LEVEL
+    return NULL;
   }
   timestamp->has_value = false;
   return timestamp;
@@ -30,8 +30,8 @@ pr_timestamp_t *pr_create_empty_timestamp() {
 pr_timestamp_t *pr_create_value_timestamp(int64_t value) {
   pr_timestamp_t *timestamp = malloc(sizeof(*timestamp));
   if (!timestamp) {
-    perror("Couldn't allocate memory for timestamp\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for timestamp\n"); // ERROR LEVEL
+    return NULL;
   }
   timestamp->has_value = true;
   timestamp->value = value;
@@ -49,8 +49,8 @@ pr_label_t *pr_add_label_to_list(pr_label_t *list, pr_label_t *label) {
 pr_entry_t *pr_create_entry_from_metric(pr_metric_entry_t *metric) {
   pr_entry_t *entry = malloc(sizeof(*entry));
   if (!entry) {
-    perror("Couldn't allocate memory for metric entry\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for metric entry\n"); // ERROR LEVEL
+    return NULL;
   }
   entry->tp = PR_METRIC_ENTRY;
   entry->body.metric = metric;
@@ -60,8 +60,8 @@ pr_entry_t *pr_create_entry_from_metric(pr_metric_entry_t *metric) {
 pr_entry_t *pr_create_entry_from_comment(pr_comment_entry_t *comment) {
   pr_entry_t *entry = malloc(sizeof(*entry));
   if (!entry) {
-    perror("Couldn't allocate memory for comment entry\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for comment entry\n"); // ERROR LEVEL
+    return NULL;
   }
   entry->tp = PR_COMMENT_ENTRY;
   entry->body.comment = comment;
@@ -71,8 +71,8 @@ pr_entry_t *pr_create_entry_from_comment(pr_comment_entry_t *comment) {
 pr_entry_t *pr_create_entry_from_type(pr_type_entry_t *type) {
   pr_entry_t *entry = malloc(sizeof(*entry));
   if (!entry) {
-    perror("Couldn't allocate memory for type entry\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for type entry\n"); // ERROR LEVEL
+    return NULL;
   }
   entry->tp = PR_TYPE_ENTRY;
   entry->body.type = type;
@@ -82,8 +82,8 @@ pr_entry_t *pr_create_entry_from_type(pr_type_entry_t *type) {
 pr_entry_t *pr_create_entry_from_help(pr_help_entry_t *help) {
   pr_entry_t *entry = malloc(sizeof(*entry));
   if (!entry) {
-    perror("Couldn't allocate memory for help entry\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for help entry\n"); // ERROR LEVEL
+    return NULL;
   }
   entry->tp = PR_HELP_ENTRY;
   entry->body.help = help;
@@ -95,8 +95,8 @@ pr_metric_entry_t *pr_create_metric_entry(char *name, pr_label_t *labels,
                                           pr_timestamp_t *timestamp) {
   pr_metric_entry_t *metric = malloc(sizeof(*metric));
   if (!metric) {
-    perror("Couldn't allocate memory for metric\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for metric\n"); // ERROR LEVEL
+    return NULL;
   }
   metric->name = name;
   metric->labels = labels;
@@ -108,8 +108,8 @@ pr_metric_entry_t *pr_create_metric_entry(char *name, pr_label_t *labels,
 pr_comment_entry_t *pr_create_comment_entry(char *text) {
   pr_comment_entry_t *comment = malloc(sizeof(*comment));
   if (!comment) {
-    perror("Couldn't allocate memory for comment\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for comment\n"); // ERROR LEVEL
+    return NULL;
   }
   comment->text = text;
   return comment;
@@ -118,8 +118,8 @@ pr_comment_entry_t *pr_create_comment_entry(char *text) {
 pr_type_entry_t *pr_create_type_entry(char *name, pr_metric_type_t tp) {
   pr_type_entry_t *type = malloc(sizeof(*type));
   if (!type) {
-    perror("Couldn't allocate memory for type\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for type\n"); // ERROR LEVEL
+    return NULL;
   }
   type->name = name;
   type->tp = tp;
@@ -129,8 +129,8 @@ pr_type_entry_t *pr_create_type_entry(char *name, pr_metric_type_t tp) {
 pr_help_entry_t *pr_create_help_entry(char *name, char *hint) {
   pr_help_entry_t *help = malloc(sizeof(*help));
   if (!help) {
-    perror("Couldn't allocate memory for help\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for help\n"); // ERROR LEVEL
+    return NULL;
   }
   help->name = name;
   help->hint = hint;
@@ -140,8 +140,8 @@ pr_help_entry_t *pr_create_help_entry(char *name, char *hint) {
 pr_item_list_t *pr_create_item_list() {
   pr_item_list_t *item_list = malloc(sizeof(*item_list));
   if (!item_list) {
-    perror("Couldn't allocate memory for item list\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for item list\n"); // ERROR LEVEL
+    return NULL;
   }
   item_list->begin = NULL;
   return item_list;
@@ -150,13 +150,13 @@ pr_item_list_t *pr_create_item_list() {
 pr_item_t *pr_create_metric_family_item() {
   pr_item_t *item = malloc(sizeof(*item));
   if (!item) {
-    perror("Couldn't allocate memory for item\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for item\n"); // ERROR LEVEL
+    return NULL;
   }
   pr_metric_family_t *metric_family = malloc(sizeof(*metric_family));
   if (!metric_family) {
-    perror("Couldn't allocate memory for metric family\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for metric family\n"); // ERROR LEVEL
+    return NULL;
   }
   metric_family->name = NULL;
   metric_family->help = NULL;
@@ -171,10 +171,14 @@ pr_item_t *pr_create_metric_family_item() {
 pr_item_t *pr_create_comment_item(char *text) {
   pr_item_t *item = malloc(sizeof(*item));
   if (!item) {
-    perror("Couldn't allocate memory for item\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for item\n"); // ERROR LEVEL
+    return NULL;
   }
   pr_comment_t *comment = malloc(sizeof(*comment));
+  if (!comment) {
+    perror("Couldn't allocate memory for comment\n"); // ERROR LEVEL
+    return NULL;
+  }
   comment->text = strdup(text);
   item->tp = PR_COMMENT_ITEM;
   item->body.comment = comment;
@@ -201,20 +205,23 @@ pr_label_t *pr_copy_label_list(pr_label_t *label_list) {
   }
   pr_label_t *label_list_copy = malloc(sizeof(*label_list_copy));
   if (!label_list_copy) {
-    perror("Couldn't allocate memory for label list copy\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for label list copy\n"); // ERROR LEVEL
+    return NULL;
   }
   label_list_copy->name = strdup(label_list->name);
   label_list_copy->value = strdup(label_list->value);
   label_list_copy->next = pr_copy_label_list(label_list->next);
+  if (!label_list_copy->next && label_list->next) {
+    return NULL;
+  }
   return label_list_copy;
 }
 
 pr_timestamp_t *pr_copy_timestamp(pr_timestamp_t *timestamp) {
   pr_timestamp_t *timestamp_copy = malloc(sizeof(*timestamp_copy));
   if (!timestamp_copy) {
-    perror("Couldn't allocate memory for label timestamp copy\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for label timestamp copy\n"); // ERROR LEVEL
+    return NULL;
   }
   timestamp_copy->has_value = timestamp->has_value;
   timestamp_copy->value = timestamp->value;
@@ -224,12 +231,18 @@ pr_timestamp_t *pr_copy_timestamp(pr_timestamp_t *timestamp) {
 pr_metric_t *pr_create_metric_from_entry(pr_metric_entry_t *metric_entry) {
   pr_metric_t *metric = malloc(sizeof(*metric));
   if (!metric) {
-    perror("Couldn't allocate memory for metric\n");
-    exit(EXIT_FAILURE);
+    perror("Couldn't allocate memory for metric\n"); // ERROR LEVEL
+    return NULL;
   }
   metric->labels = pr_copy_label_list(metric_entry->labels);
+  if (!metric->labels && metric_entry->labels) {
+    return NULL;
+  }
   metric->value = metric_entry->value;
   metric->timestamp = pr_copy_timestamp(metric_entry->timestamp);
+  if (!metric->timestamp) {
+    return NULL;
+  }
   metric->next = NULL;
   return metric;
 }
@@ -261,11 +274,14 @@ int pr_compare_entries_names(const char* name_x, const char* name_y) {
   return 0;
 }
 
-void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
+int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
   if (entry->tp != PR_COMMENT_ENTRY) {
     char *metric_family_name = pr_get_cur_family_name(item_list);
     if (!metric_family_name || !pr_compare_entries_names(metric_family_name, entry->body.metric->name)) {
       pr_item_t *new_metric_family = pr_create_metric_family_item();
+      if (!new_metric_family) {
+        return EXIT_FAILURE;
+      }
       pr_add_item_to_item_list(item_list, new_metric_family);
     }
     pr_metric_family_t *metric_family = item_list->begin->body.metric_family;
@@ -274,8 +290,14 @@ void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
       pr_metric_entry_t *metric_entry = entry->body.metric;
       if (!metric_family->name) {
         metric_family->name = strdup(metric_entry->name);
+        if (!metric_family->name) {
+          return EXIT_FAILURE;
+        }
       }
       pr_metric_t *new_metric = pr_create_metric_from_entry(metric_entry);
+      if (!new_metric) {
+        return EXIT_FAILURE;
+      }
       pr_add_metric_to_metric_family(metric_family, new_metric);
       break;
     }
@@ -283,6 +305,9 @@ void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
       pr_type_entry_t *type_entry = entry->body.type;
       if (!metric_family->name) {
         metric_family->name = strdup(type_entry->name);
+        if (!metric_family->name) {
+          return EXIT_FAILURE;
+        }
       }
       metric_family->tp = type_entry->tp;
       break;
@@ -291,9 +316,15 @@ void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
       pr_help_entry_t *help_entry = entry->body.help;
       if (!metric_family->name) {
         metric_family->name = strdup(help_entry->name);
+        if (!metric_family->name) {
+          return EXIT_FAILURE;
+        }
       }
       if (!metric_family->help) {
         metric_family->help = strdup(help_entry->hint);
+        if (!metric_family->help) {
+          return EXIT_FAILURE;
+        }
       }
       break;
     }
@@ -303,8 +334,12 @@ void pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
     }
   } else {
     pr_item_t *new_comment = pr_create_comment_item(entry->body.comment->text);
+    if (!new_comment) {
+      return EXIT_FAILURE;
+    }
     pr_add_item_to_item_list(item_list, new_comment);
   }
+  return 0;
 }
 
 void pr_delete_label_list(pr_label_t *label_list) {
