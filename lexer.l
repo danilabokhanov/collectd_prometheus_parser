@@ -18,11 +18,11 @@ void set_lexer_buffer(const char* str) {
 }
 
 int lexer_error(const char* s, int status_code) {
-    fprintf(stderr, "Unrecognized token at line %d: %s", yylineno, s);
+    fprintf(stderr, "Unrecognized token at line %d: %s", prlineno, s); // ERROR LEVEL
     return status_code;
 }
 
-int yywrap(void) {
+int prwrap(void) {
     return 1;
 }
 
@@ -73,6 +73,8 @@ char* replace_escaped_chars(char* text, size_t text_size) {
 
 %}
 
+%option prefix="pr"
+
 %x COMMENT_TEXT
 %x TYPE
 %x HELP_NAME
@@ -80,178 +82,146 @@ char* replace_escaped_chars(char* text, size_t text_size) {
 
 %%
 NaN {
-    yylval.number = NAN;
-    perror("FLOAT_NUMBER");
+    prlval.number = NAN;
     return FLOAT_NUMBER;
 }
 
 \+Inf {
-    yylval.number = INFINITY;
-    perror("FLOAT_NUMBER");
+    prlval.number = INFINITY;
     return FLOAT_NUMBER;
 }
 
 \-Inf {
-    yylval.number = -INFINITY;
-    perror("FLOAT_NUMBER");
+    prlval.number = -INFINITY;
     return FLOAT_NUMBER;
 }
 
 "# TYPE" {
     BEGIN(TYPE);
-    perror("TYPE_DECLARATION");
     return TYPE_DECLARATION;
 }
 
 "# HELP" {
     BEGIN(HELP_NAME);
-    perror("HELP_DECLARATION");
     return HELP_DECLARATION;
 }
 
 <TYPE>"counter" {
     BEGIN(INITIAL);
-    yylval.metric_type = PR_COUNTER;
-    perror("METRIC_TYPE");
+    prlval.metric_type = PR_COUNTER;
     return METRIC_TYPE;
 }
 
 <TYPE>"gauge" {
     BEGIN(INITIAL);
-    yylval.metric_type = PR_GAUGE;
-    perror("METRIC_TYPE");
+    prlval.metric_type = PR_GAUGE;
     return METRIC_TYPE;
 }
 
 <TYPE>"histogram" {
     BEGIN(INITIAL);
-    yylval.metric_type = PR_HISTOGRAM;
-    perror("METRIC_TYPE");
+    prlval.metric_type = PR_HISTOGRAM;
     return METRIC_TYPE;
 }
 
 <TYPE>"summary" {
     BEGIN(INITIAL);
-    yylval.metric_type = PR_SUMMARY;
-    perror("METRIC_TYPE");
+    prlval.metric_type = PR_SUMMARY;
     return METRIC_TYPE;
 }
 
 <TYPE>"untyped" {
     BEGIN(INITIAL);
-    yylval.metric_type = PR_UNTYPED;
-    perror("METRIC_TYPE");
+    prlval.metric_type = PR_UNTYPED;
     return METRIC_TYPE;
 }
 
 <TYPE>[a-zA-Z_][a-zA-Z0-9_]* {
-    yylval.string = strdup(yytext);
-    if (!yylval.string) {
+    prlval.string = strdup(prtext);
+    if (!prlval.string) {
         return EXIT_FAILURE;
     }
-    perror("NAME");
-    perror(yylval.string);
     return NAME;
 }
 
 "#" {
     BEGIN(COMMENT_TEXT);
-    perror("COMMENT_DECLARATION");
 }
 
 <COMMENT_TEXT>[^\n]* {
     BEGIN(INITIAL);
-    yylval.string = strndup(yytext + 1, strlen(yytext) - 1);
-    if (!yylval.string) {
+    prlval.string = strndup(prtext + 1, strlen(prtext) - 1);
+    if (!prlval.string) {
         return EXIT_FAILURE;
     }
-    perror("COMMENT");
     return COMMENT;
 }
 
 <HELP_NAME>[a-zA-Z_][a-zA-Z0-9_]* {
     BEGIN(HELP_HINT);
-    yylval.string = strdup(yytext);
-    if (!yylval.string) {
+    prlval.string = strdup(prtext);
+    if (!prlval.string) {
         return EXIT_FAILURE;
     }
-    perror("NAME");
-    perror(yylval.string);
     return NAME;
 }
 
 <HELP_HINT>[^\n]* {
     BEGIN(INITIAL);
-    yylval.string = strndup(yytext + 1, strlen(yytext) - 1);
-    if (!yylval.string) {
+    prlval.string = strndup(prtext + 1, strlen(prtext) - 1);
+    if (!prlval.string) {
         return EXIT_FAILURE;
     }
-    perror("METRIC_HELP");
     return METRIC_HELP;
 }
 
 \"(\\[\"\\nrt]|[^\"\\])*\" {
-    yylval.string = replace_escaped_chars(yytext + 1, strlen(yytext) - 2);
-    if (yylval.string == NULL) {
+    prlval.string = replace_escaped_chars(prtext + 1, strlen(prtext) - 2);
+    if (prlval.string == NULL) {
         return lexer_error("Couldn't allocate memory for string without escaped chars\n", EXIT_FAILURE);
     }
-    perror("LABEL_VALUE");
-    perror(yylval.string);
     return LABEL_VALUE;
 }
 
 [+-]?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)? {
-    yylval.number = atof(yytext);
-    perror("FLOAT_NUMBER");
+    prlval.number = atof(prtext);
     return FLOAT_NUMBER;
 }
 
 [+-]?[0-9]+ {
-    yylval.integer = strtoll(yytext, NULL, 10);
-    perror("INTEGER_NUMBER");
+    prlval.integer = strtoll(prtext, NULL, 10);
     return INTEGER_NUMBER;
 }
 
 "{" {
-    perror("OPEN_BRACE");
     return OPEN_BRACE;
 }
 
 "}" {
-    perror("CLOSE_BRACE");
     return CLOSE_BRACE;
 }
 
 = {
-    perror("EQUALS");
     return EQUALS;
 }
 
 , {
-    perror("COMMA");
     return COMMA;
 }
 
 [a-zA-Z_][a-zA-Z0-9_]* {
-    yylval.string = strdup(yytext);
-    if (!yylval.string) {
+    prlval.string = strdup(prtext);
+    if (!prlval.string) {
         return EXIT_FAILURE;
     }
-    perror("NAME");
-    perror(yylval.string);
     return NAME;
 }
 
-[ \t\r]+ {
-    perror("NOTHING");
-}
+[ \t\r]+ {}
 
 "\n" {
-    yylineno++;
-    perror("NEW_LINE");
+    prlineno++;
 }
 
-. {
-    perror("UNMATCHED");
-}
+. {}
 %%

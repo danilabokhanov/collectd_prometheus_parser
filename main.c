@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern int yyparse(void);
+extern int prparse(void);
 extern void set_lexer_buffer(const char *str);
 
 extern pr_item_list_t *pr_items;
@@ -32,7 +32,7 @@ char *read_str_from_file(const char *filename) {
 int main(int argc, char *argv[]) {
   char *lexer_input = read_str_from_file(argv[1]);
   set_lexer_buffer(lexer_input);
-  if (yyparse() == 0) {
+  if (prparse() == 0) {
     printf("Parsing completed successfully.\n\n");
     pr_print_item_list(pr_items);
     pr_delete_item_list(pr_items);

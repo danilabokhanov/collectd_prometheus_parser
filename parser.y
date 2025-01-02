@@ -5,11 +5,11 @@
 #include <stdbool.h>
 #include "ast.h"
 
-extern int yylex();
-void yyerror(const char* s);
+extern int prlex();
+void prerror(const char* s);
 
-extern int yylineno;
-extern char *yytext;
+extern int prlineno;
+extern char *prtext;
 pr_item_list_t* pr_items = NULL;
 
 %}
@@ -45,7 +45,7 @@ pr_item_list_t* pr_items = NULL;
 %type <item_list> item_list
 
 %define parse.error detailed
-
+%define api.prefix {pr}
 %%
 
 input:
@@ -204,6 +204,6 @@ help:
 
 %%
 
-void yyerror(const char *s) {
-    fprintf(stderr, "Syntax error at line %d: %s near '%s'\n", yylineno, s, yytext); // ERROR LEVEL
+void prerror(const char *s) {
+    fprintf(stderr, "Syntax error at line %d: %s near '%s'\n", prlineno, s, prtext); // ERROR LEVEL
 }

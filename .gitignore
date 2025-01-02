@@ -1,5 +1,6 @@
 *.tab.h
 *.tab.c
 *.yy.c
+*pr.c
 lexer.c
 *.out
