@@ -30,7 +30,7 @@ char *read_str_from_file(const char *filename) {
 }
 
 int main(int argc, char *argv[]) {
-  const char *lexer_input = read_str_from_file(argv[1]);
+  char *lexer_input = read_str_from_file(argv[1]);
   set_lexer_buffer(lexer_input);
   if (yyparse() == 0) {
     printf("Parsing completed successfully.\n\n");
@@ -39,5 +39,6 @@ int main(int argc, char *argv[]) {
   } else {
     printf("Failed while parsing\n");
   }
+  free(lexer_input);
   return 0;
 }

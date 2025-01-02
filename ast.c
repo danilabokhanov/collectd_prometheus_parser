@@ -405,4 +405,5 @@ void pr_delete_entry(pr_entry_t *entry) {
     break;
   }
   }
+  free(entry);
 }
