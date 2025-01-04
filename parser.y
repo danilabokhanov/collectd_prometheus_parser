@@ -49,7 +49,7 @@ pr_item_list_t* pr_items = NULL;
 %%
 
 input:
-    item_list {
+    | item_list {
         pr_items = $1;
     }
     ;
