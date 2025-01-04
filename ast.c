@@ -370,6 +370,7 @@ void pr_delete_metric_family(pr_metric_family_t *metric_family) {
   free(metric_family->name);
   free(metric_family->help);
   pr_delete_metric_list(metric_family->metric_list);
+  free(metric_family);
 }
 
 void pr_delete_comment_entry(pr_comment_entry_t *comment) {
@@ -392,6 +393,7 @@ void pr_delete_item(pr_item_t *item) {
     break;
   }
   }
+  free(item);
 }
 
 void pr_delete_item_list(pr_item_list_t *item_list) {
@@ -401,6 +403,7 @@ void pr_delete_item_list(pr_item_list_t *item_list) {
     pr_delete_item(cur_item);
     cur_item = next_item;
   }
+  free(item_list);
 }
 
 void pr_delete_metric_entry(pr_metric_entry_t *metric) {
