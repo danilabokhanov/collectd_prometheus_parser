@@ -5,6 +5,110 @@
 
 const char * PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
 
+void pr_delete_label_list(pr_label_t *label_list) {
+  if (!label_list) {
+    return;
+  }
+  free(label_list->name);
+  free(label_list->value);
+  pr_delete_label_list(label_list->next);
+  free(label_list);
+}
+
+void pr_delete_metric(pr_metric_t *metric) {
+  pr_delete_label_list(metric->labels);
+  free(metric->timestamp);
+  free(metric);
+}
+
+void pr_delete_metric_list(pr_metric_t *metric_list) {
+  if (!metric_list) {
+    return;
+  }
+  pr_delete_metric_list(metric_list->next);
+  pr_delete_metric(metric_list);
+}
+
+void pr_delete_metric_family(pr_metric_family_t *metric_family) {
+  free(metric_family->name);
+  free(metric_family->help);
+  pr_delete_metric_list(metric_family->metric_list);
+  free(metric_family);
+}
+
+void pr_delete_comment_entry(pr_comment_entry_t *comment) {
+  free(comment->text);
+  free(comment);
+}
+
+void pr_delete_comment(pr_comment_t *comment) {
+  pr_delete_comment_entry(comment);
+}
+
+void pr_delete_item(pr_item_t *item) {
+  switch (item->tp) {
+  case (PR_METRIC_FAMILY_ITEM): {
+    pr_delete_metric_family(item->body.metric_family);
+    break;
+  }
+  case (PR_COMMENT_ITEM): {
+    pr_delete_comment(item->body.comment);
+    break;
+  }
+  }
+  free(item);
+}
+
+void pr_delete_item_list(pr_item_list_t *item_list) {
+  pr_item_t *cur_item = item_list->begin;
+  while (cur_item) {
+    pr_item_t *next_item = cur_item->next;
+    pr_delete_item(cur_item);
+    cur_item = next_item;
+  }
+  free(item_list);
+}
+
+void pr_delete_metric_entry(pr_metric_entry_t *metric) {
+  free(metric->name);
+  pr_delete_label_list(metric->labels);
+  free(metric->timestamp);
+  free(metric);
+}
+
+void pr_delete_type_entry(pr_type_entry_t *type) {
+  free(type->name);
+  free(type);
+}
+
+void pr_delete_help_entry(pr_help_entry_t *help) {
+  free(help->name);
+  free(help->hint);
+  free(help);
+}
+
+void pr_delete_entry(pr_entry_t *entry) {
+  switch (entry->tp) {
+  case (PR_METRIC_ENTRY): {
+    pr_delete_metric_entry(entry->body.metric);
+    break;
+  }
+  case (PR_COMMENT_ENTRY): {
+    pr_delete_comment_entry(entry->body.comment);
+    break;
+  }
+  case (PR_TYPE_ENTRY): {
+    pr_delete_type_entry(entry->body.type);
+    break;
+  }
+  case (PR_HELP_ENTRY): {
+    pr_delete_help_entry(entry->body.help);
+    break;
+  }
+  }
+  free(entry);
+}
+
 pr_label_t *pr_create_label(char *name, char *value) {
   pr_label_t *label = malloc(sizeof(*label));
   if (!label) {
@@ -153,8 +257,10 @@ pr_item_t *pr_create_metric_family_item() {
     perror("Couldn't allocate memory for item\n"); // ERROR LEVEL
     return NULL;
   }
+  memset(item, 0, sizeof(*item));
   pr_metric_family_t *metric_family = malloc(sizeof(*metric_family));
   if (!metric_family) {
+    pr_delete_item(item);
     perror("Couldn't allocate memory for metric family\n"); // ERROR LEVEL
     return NULL;
   }
@@ -174,12 +280,21 @@ pr_item_t *pr_create_comment_item(char *text) {
     perror("Couldn't allocate memory for item\n"); // ERROR LEVEL
     return NULL;
   }
+  memset(item, 0, sizeof(*item));
   pr_comment_t *comment = malloc(sizeof(*comment));
   if (!comment) {
+    pr_delete_item(item);
     perror("Couldn't allocate memory for comment\n"); // ERROR LEVEL
     return NULL;
   }
+  memset(comment, 0, sizeof(*comment));
   comment->text = strdup(text);
+  if (!comment->text) {
+    pr_delete_item(item);
+    pr_delete_comment(comment);
+    perror("Couldn't allocate memory for comment text\n"); // ERROR LEVEL
+    return NULL;
+  }
   item->tp = PR_COMMENT_ITEM;
   item->body.comment = comment;
   item->next = NULL;
@@ -208,10 +323,22 @@ pr_label_t *pr_copy_label_list(pr_label_t *label_list) {
     perror("Couldn't allocate memory for label list copy\n"); // ERROR LEVEL
     return NULL;
   }
+  memset(label_list_copy, 0, sizeof(*label_list_copy));
   label_list_copy->name = strdup(label_list->name);
+  if (!label_list_copy->name) {
+    pr_delete_label_list(label_list_copy);
+    perror("Couldn't allocate memory for label list copy name\n"); // ERROR LEVEL
+    return NULL;
+  }
   label_list_copy->value = strdup(label_list->value);
+  if (!label_list_copy->value) {
+    pr_delete_label_list(label_list_copy);
+    perror("Couldn't allocate memory for label list copy value\n"); // ERROR LEVEL
+    return NULL;
+  }
   label_list_copy->next = pr_copy_label_list(label_list->next);
   if (!label_list_copy->next && label_list->next) {
+    pr_delete_label_list(label_list_copy);
     return NULL;
   }
   return label_list_copy;
@@ -234,13 +361,16 @@ pr_metric_t *pr_create_metric_from_entry(pr_metric_entry_t *metric_entry) {
     perror("Couldn't allocate memory for metric\n"); // ERROR LEVEL
     return NULL;
   }
+  memset(metric, 0, sizeof(*metric));
   metric->labels = pr_copy_label_list(metric_entry->labels);
   if (!metric->labels && metric_entry->labels) {
+    pr_delete_metric(metric);
     return NULL;
   }
   metric->value = metric_entry->value;
   metric->timestamp = pr_copy_timestamp(metric_entry->timestamp);
   if (!metric->timestamp) {
+    pr_delete_metric(metric);
     return NULL;
   }
   metric->next = NULL;
@@ -340,108 +470,4 @@ int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
     pr_add_item_to_item_list(item_list, new_comment);
   }
   return 0;
-}
-
-void pr_delete_label_list(pr_label_t *label_list) {
-  if (!label_list) {
-    return;
-  }
-  free(label_list->name);
-  free(label_list->value);
-  pr_delete_label_list(label_list->next);
-  free(label_list);
-}
-
-void pr_delete_metric(pr_metric_t *metric) {
-  pr_delete_label_list(metric->labels);
-  free(metric->timestamp);
-  free(metric);
-}
-
-void pr_delete_metric_list(pr_metric_t *metric_list) {
-  if (!metric_list) {
-    return;
-  }
-  pr_delete_metric_list(metric_list->next);
-  pr_delete_metric(metric_list);
-}
-
-void pr_delete_metric_family(pr_metric_family_t *metric_family) {
-  free(metric_family->name);
-  free(metric_family->help);
-  pr_delete_metric_list(metric_family->metric_list);
-  free(metric_family);
-}
-
-void pr_delete_comment_entry(pr_comment_entry_t *comment) {
-  free(comment->text);
-  free(comment);
-}
-
-void pr_delete_comment(pr_comment_t *comment) {
-  pr_delete_comment_entry(comment);
-}
-
-void pr_delete_item(pr_item_t *item) {
-  switch (item->tp) {
-  case (PR_METRIC_FAMILY_ITEM): {
-    pr_delete_metric_family(item->body.metric_family);
-    break;
-  }
-  case (PR_COMMENT_ITEM): {
-    pr_delete_comment(item->body.comment);
-    break;
-  }
-  }
-  free(item);
-}
-
-void pr_delete_item_list(pr_item_list_t *item_list) {
-  pr_item_t *cur_item = item_list->begin;
-  while (cur_item) {
-    pr_item_t *next_item = cur_item->next;
-    pr_delete_item(cur_item);
-    cur_item = next_item;
-  }
-  free(item_list);
-}
-
-void pr_delete_metric_entry(pr_metric_entry_t *metric) {
-  free(metric->name);
-  pr_delete_label_list(metric->labels);
-  free(metric->timestamp);
-  free(metric);
-}
-
-void pr_delete_type_entry(pr_type_entry_t *type) {
-  free(type->name);
-  free(type);
-}
-
-void pr_delete_help_entry(pr_help_entry_t *help) {
-  free(help->name);
-  free(help->hint);
-  free(help);
-}
-
-void pr_delete_entry(pr_entry_t *entry) {
-  switch (entry->tp) {
-  case (PR_METRIC_ENTRY): {
-    pr_delete_metric_entry(entry->body.metric);
-    break;
-  }
-  case (PR_COMMENT_ENTRY): {
-    pr_delete_comment_entry(entry->body.comment);
-    break;
-  }
-  case (PR_TYPE_ENTRY): {
-    pr_delete_type_entry(entry->body.type);
-    break;
-  }
-  case (PR_HELP_ENTRY): {
-    pr_delete_help_entry(entry->body.help);
-    break;
-  }
-  }
-  free(entry);
 }

@@ -109,6 +109,11 @@ pr_item_t *pr_create_comment_item(char *text);
 pr_item_list_t *pr_create_item_list();
 int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry);
 
+void pr_delete_label_list(pr_label_t *label_list);
+void pr_delete_metric_entry(pr_metric_entry_t *metric);
+void pr_delete_comment_entry(pr_comment_entry_t *comment);
+void pr_delete_type_entry(pr_type_entry_t *type);
+void pr_delete_help_entry(pr_help_entry_t *help);
 void pr_delete_entry(pr_entry_t *entry);
 void pr_delete_item_list(pr_item_list_t *item_list);
 
