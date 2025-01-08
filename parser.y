@@ -2,91 +2,189 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include "ast.h"
 
-extern int yylex();
-void yyerror(const char* s);
+extern int prlex();
+void prerror(const char* s);
 
-tree* tr = NULL;
+extern int prlineno;
+extern char *prtext;
+pr_item_list_t* pr_items = NULL;
+
 %}
 
 %union {
     char* string;
     double number;
     int64_t integer;
-    metric* metric;
-    label* label;
-    comment* comment;
-    node* node;
-    tree* tree;
+    pr_metric_type_t metric_type;
+    pr_metric_entry_t* metric;
+    pr_label_t* label;
+    pr_timestamp_t* timestamp;
+    pr_comment_entry_t* comment;
+    pr_type_entry_t* type;
+    pr_help_entry_t* help;
+    pr_entry_t* entry;
+    pr_item_list_t* item_list;
 }
 
-%token <string> DECLARATION LABEL_VALUE COMMENT
-%token <number> METRIC_VALUE
-%token <integer> TIMESTAMP
-%token OPEN_BRACE CLOSE_BRACE EQUALS COMMA
-
-%type <metric> metric
+%token <string> NAME LABEL_VALUE COMMENT METRIC_HELP
+%token <number> FLOAT_NUMBER
+%token <integer> INTEGER_NUMBER
+%token <metric_type> METRIC_TYPE
+%token TYPE_DECLARATION HELP_DECLARATION OPEN_BRACE CLOSE_BRACE EQUALS COMMA
+%type <number> numeric_value
+%type <timestamp> timestamp
 %type <label> label label_list inner_label_list
+%type <metric> metric
 %type <comment> comment
-%type <node> node
-%type <tree> tree
+%type <type> type
+%type <help> help
+%type <entry> entry
+%type <item_list> item_list
 
+%destructor {
+    free($$);
+} <string>
+
+%destructor {
+    free($$);
+} <timestamp>
+
+%destructor {
+    pr_delete_label_list($$);
+} <label>
+
+%destructor {
+    pr_delete_metric_entry($$);
+} <metric>
+
+%destructor {
+    pr_delete_comment_entry($$);
+} <comment>
+
+%destructor {
+    pr_delete_type_entry($$);
+} <type>
+
+%destructor {
+    pr_delete_help_entry($$);
+} <help>
+
+%destructor {
+    pr_delete_entry($$);
+} <entry>
+
+
+%define parse.error detailed
+%define api.prefix {pr}
 %%
 
 input:
-    tree {
-        tr = $1;
+    | item_list {
+        pr_items = $1;
     }
     ;
 
-tree:
-    node
+item_list:
+    entry
     {
-        $$ = create_empty_tree();
-        if ($1 -> tp == METRIC_NODE) {
-            add_metric_to_tree(tr, $1 -> body.metric);
-        } else if ($1 -> tp == COMMENT_NODE) {
-            add_comment_to_tree(tr, $1 -> body.comment);
+        $$ = pr_create_item_list();
+        if (!$$) {
+            pr_delete_entry($1);
+            return EXIT_FAILURE;
         }
+        if (pr_add_entry_to_item_list($$, $1) < 0) {
+            pr_delete_entry($1);
+            return EXIT_FAILURE;
+        }
+        pr_delete_entry($1);
     }
-    | node tree
+    | entry item_list
     {
-        if ($1 -> tp == METRIC_NODE) {
-            add_metric_to_tree($2, $1 -> body.metric);
-        } else if ($1 -> tp == COMMENT_NODE) {
-            add_comment_to_tree($2, $1 -> body.comment);
+        if (pr_add_entry_to_item_list($2, $1) < 0) {
+            pr_delete_entry($1);
+            return EXIT_FAILURE;
         }
         $$ = $2;
+        pr_delete_entry($1);
     }
     ;
 
-node:
+entry:
     metric
     {
-        $$ = create_metric_node($1);
+        $$ = pr_create_entry_from_metric($1);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
     }
     | comment {
-        $$ = create_comment_node($1);
+        $$ = pr_create_entry_from_comment($1);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
+    }
+    | type {
+        $$ = pr_create_entry_from_type($1);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
+    }
+    | help {
+        $$ = pr_create_entry_from_help($1);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
     }
     ;
 
 metric:
-    DECLARATION label_list METRIC_VALUE TIMESTAMP
+    NAME label_list numeric_value timestamp
     {
-        $$ = create_metric($1, $2, $3, $4);
+        $$ = pr_create_metric_entry($1, $2, $3, $4);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
+    }
+    ;
+
+numeric_value:
+    FLOAT_NUMBER
+    {
+        $$ = $1;
+    }
+    | INTEGER_NUMBER
+    {
+        $$ = $1;
+    }
+    ;
+
+timestamp:
+    INTEGER_NUMBER
+    {
+        $$ = pr_create_value_timestamp($1);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
     }
     |
-    DECLARATION label_list METRIC_VALUE
     {
-        $$ = create_metric($1, $2, $3, -1);
+        $$ = pr_create_empty_timestamp();
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
     }
     ;
 
 comment:
-    COMMENT
+   COMMENT
     {
-        $$ = create_comment($1);
+        $$ = pr_create_comment_entry($1);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
     }
     ;
 
@@ -99,13 +197,14 @@ label_list:
     {
         $$ = NULL;
     }
+    ;
 
 inner_label_list:
     label {
         $$ = $1;
     }
     | label COMMA inner_label_list {
-        $$ =  add_label_to_list($3, $1);
+        $$ = pr_add_label_to_list($3, $1);
     }
     |
     {
@@ -114,9 +213,33 @@ inner_label_list:
     ;
 
 label:
-    DECLARATION EQUALS LABEL_VALUE
+    NAME EQUALS LABEL_VALUE
     {
-        $$ = create_label($1, $3);
+        $$ = pr_create_label($1, $3);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
     }
     ;
+
+type:
+    TYPE_DECLARATION NAME METRIC_TYPE {
+        $$ = pr_create_type_entry($2, $3);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
+    }
+
+help:
+    HELP_DECLARATION NAME METRIC_HELP {
+        $$ = pr_create_help_entry($2, $3);
+        if (!$$) {
+            return EXIT_FAILURE;
+        }
+    }
+
 %%
+
+void prerror(const char *s) {
+    fprintf(stderr, "Syntax error at line %d: %s near '%s'\n", prlineno, s, prtext); // ERROR LEVEL
+}
