@@ -7,6 +7,9 @@
 #include <stdbool.h>
 #include <math.h>
 
+#undef ECHO
+#define ECHO
+
 static YY_BUFFER_STATE lexer_buffer;
 
 void set_lexer_buffer(const char* str) {
