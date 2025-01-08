@@ -36,13 +36,46 @@ pr_item_list_t* pr_items = NULL;
 %token TYPE_DECLARATION HELP_DECLARATION OPEN_BRACE CLOSE_BRACE EQUALS COMMA
 %type <number> numeric_value
 %type <timestamp> timestamp
-%type <metric> metric
 %type <label> label label_list inner_label_list
+%type <metric> metric
 %type <comment> comment
 %type <type> type
 %type <help> help
 %type <entry> entry
 %type <item_list> item_list
+
+%destructor {
+    free($$);
+} <string>
+
+%destructor {
+    free($$);
+} <timestamp>
+
+%destructor {
+    pr_delete_label_list($$);
+} <label>
+
+%destructor {
+    pr_delete_metric_entry($$);
+} <metric>
+
+%destructor {
+    pr_delete_comment_entry($$);
+} <comment>
+
+%destructor {
+    pr_delete_type_entry($$);
+} <type>
+
+%destructor {
+    pr_delete_help_entry($$);
+} <help>
+
+%destructor {
+    pr_delete_entry($$);
+} <entry>
+
 
 %define parse.error detailed
 %define api.prefix {pr}
@@ -54,14 +87,16 @@ input:
     }
     ;
 
-item_list :
+item_list:
     entry
     {
         $$ = pr_create_item_list();
         if (!$$) {
+            pr_delete_entry($1);
             return EXIT_FAILURE;
         }
         if (pr_add_entry_to_item_list($$, $1) < 0) {
+            pr_delete_entry($1);
             return EXIT_FAILURE;
         }
         pr_delete_entry($1);
@@ -69,6 +104,7 @@ item_list :
     | entry item_list
     {
         if (pr_add_entry_to_item_list($2, $1) < 0) {
+            pr_delete_entry($1);
             return EXIT_FAILURE;
         }
         $$ = $2;
