@@ -4,7 +4,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum { PR_COUNTER, PR_GAUGE, PR_HISTOGRAM, PR_SUMMARY, PR_UNTYPED } pr_metric_type_t;
+typedef enum {
+  PR_COUNTER,
+  PR_GAUGE,
+  PR_HISTOGRAM,
+  PR_SUMMARY,
+  PR_UNTYPED
+} pr_metric_type_t;
 
 typedef enum {
   PR_METRIC_ENTRY,

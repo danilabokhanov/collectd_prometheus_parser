@@ -1,8 +1,8 @@
-#include "ast.h"
-#include "log.h"
-#include "parser.tab.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "ast.h"
+#include "log.h"
+#include "parser.h"
 
 extern int prparse(void);
 extern void set_lexer_buffer(const char *str);
@@ -32,7 +32,7 @@ char *read_str_from_file(const char *filename) {
 int main(int argc, char *argv[]) {
   char *lexer_input = read_str_from_file(argv[1]);
   set_lexer_buffer(lexer_input);
-  if (prparse() == 0) {
+  if (yyparse() == 0) {
     printf("Parsing completed successfully.\n\n");
     pr_print_item_list(pr_items);
     pr_delete_item_list(pr_items);

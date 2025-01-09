@@ -1,9 +1,9 @@
-#include "ast.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ast.h"
 
-const char * PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
+const char *PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
 
 void pr_delete_label_list(pr_label_t *label_list) {
   if (!label_list) {
@@ -327,13 +327,15 @@ pr_label_t *pr_copy_label_list(pr_label_t *label_list) {
   label_list_copy->name = strdup(label_list->name);
   if (!label_list_copy->name) {
     pr_delete_label_list(label_list_copy);
-    perror("Couldn't allocate memory for label list copy name\n"); // ERROR LEVEL
+    perror(
+        "Couldn't allocate memory for label list copy name\n"); // ERROR LEVEL
     return NULL;
   }
   label_list_copy->value = strdup(label_list->value);
   if (!label_list_copy->value) {
     pr_delete_label_list(label_list_copy);
-    perror("Couldn't allocate memory for label list copy value\n"); // ERROR LEVEL
+    perror(
+        "Couldn't allocate memory for label list copy value\n"); // ERROR LEVEL
     return NULL;
   }
   label_list_copy->next = pr_copy_label_list(label_list->next);
@@ -347,7 +349,8 @@ pr_label_t *pr_copy_label_list(pr_label_t *label_list) {
 pr_timestamp_t *pr_copy_timestamp(pr_timestamp_t *timestamp) {
   pr_timestamp_t *timestamp_copy = malloc(sizeof(*timestamp_copy));
   if (!timestamp_copy) {
-    perror("Couldn't allocate memory for label timestamp copy\n"); // ERROR LEVEL
+    perror(
+        "Couldn't allocate memory for label timestamp copy\n"); // ERROR LEVEL
     return NULL;
   }
   timestamp_copy->has_value = timestamp->has_value;
@@ -383,20 +386,27 @@ void pr_add_metric_to_metric_family(pr_metric_family_t *metric_family,
   metric_family->metric_list = metric;
 }
 
-int pr_compare_entries_names(const char* name_x, const char* name_y) {
-  for (size_t suff_x_id = 0; suff_x_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES); suff_x_id++) {
+int pr_compare_entries_names(const char *name_x, const char *name_y) {
+  for (size_t suff_x_id = 0;
+       suff_x_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES);
+       suff_x_id++) {
     size_t len_suff_x = strlen(PR_METRIC_SUFFIXES[suff_x_id]);
     size_t len_x = strlen(name_x);
-    if (len_suff_x > len_x || strcmp(name_x + len_x - len_suff_x, PR_METRIC_SUFFIXES[suff_x_id])) {
+    if (len_suff_x > len_x ||
+        strcmp(name_x + len_x - len_suff_x, PR_METRIC_SUFFIXES[suff_x_id])) {
       continue;
     }
-    for (size_t suff_y_id = 0; suff_y_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES); suff_y_id++) {
+    for (size_t suff_y_id = 0;
+         suff_y_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES);
+         suff_y_id++) {
       size_t len_suff_y = strlen(PR_METRIC_SUFFIXES[suff_y_id]);
       size_t len_y = strlen(name_y);
-      if (len_suff_y > len_y || strcmp(name_y + len_y - len_suff_y, PR_METRIC_SUFFIXES[suff_y_id])) {
+      if (len_suff_y > len_y ||
+          strcmp(name_y + len_y - len_suff_y, PR_METRIC_SUFFIXES[suff_y_id])) {
         continue;
       }
-      if (len_x - len_suff_x == len_y - len_suff_y && !strncmp(name_x, name_y, len_x - len_suff_x)) {
+      if (len_x - len_suff_x == len_y - len_suff_y &&
+          !strncmp(name_x, name_y, len_x - len_suff_x)) {
         return 1;
       }
     }
@@ -407,7 +417,9 @@ int pr_compare_entries_names(const char* name_x, const char* name_y) {
 int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
   if (entry->tp != PR_COMMENT_ENTRY) {
     char *metric_family_name = pr_get_cur_family_name(item_list);
-    if (!metric_family_name || !pr_compare_entries_names(metric_family_name, entry->body.metric->name)) {
+    if (!metric_family_name ||
+        !pr_compare_entries_names(metric_family_name,
+                                  entry->body.metric->name)) {
       pr_item_t *new_metric_family = pr_create_metric_family_item();
       if (!new_metric_family) {
         return EXIT_FAILURE;
