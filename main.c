@@ -1,8 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "ast.h"
 #include "log.h"
 #include "parser.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 extern int prparse(void);
 extern void set_lexer_buffer(const char *str);

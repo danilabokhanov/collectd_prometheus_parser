@@ -1,7 +1,8 @@
+#include "ast.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ast.h"
 
 const char *PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
 
@@ -387,11 +388,12 @@ void pr_add_metric_to_metric_family(pr_metric_family_t *metric_family,
 }
 
 int pr_compare_entries_names(const char *name_x, const char *name_y) {
+  size_t len_x = strlen(name_x);
+  size_t len_y = strlen(name_y);
   for (size_t suff_x_id = 0;
        suff_x_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES);
        suff_x_id++) {
     size_t len_suff_x = strlen(PR_METRIC_SUFFIXES[suff_x_id]);
-    size_t len_x = strlen(name_x);
     if (len_suff_x > len_x ||
         strcmp(name_x + len_x - len_suff_x, PR_METRIC_SUFFIXES[suff_x_id])) {
       continue;
@@ -400,7 +402,6 @@ int pr_compare_entries_names(const char *name_x, const char *name_y) {
          suff_y_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES);
          suff_y_id++) {
       size_t len_suff_y = strlen(PR_METRIC_SUFFIXES[suff_y_id]);
-      size_t len_y = strlen(name_y);
       if (len_suff_y > len_y ||
           strcmp(name_y + len_y - len_suff_y, PR_METRIC_SUFFIXES[suff_y_id])) {
         continue;

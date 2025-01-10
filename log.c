@@ -1,7 +1,7 @@
-#include <stdio.h>
-
 #include "ast.h"
 #include "log.h"
+
+#include <stdio.h>
 
 void pr_print_label(pr_label_t *label) {
   printf("Label name: %s, Label value: %s\n", label->name, label->value);
