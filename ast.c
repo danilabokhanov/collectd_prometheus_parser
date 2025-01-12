@@ -135,7 +135,7 @@ pr_timestamp_t *pr_create_empty_timestamp(void) {
 pr_timestamp_t *pr_create_value_timestamp(int64_t value) {
   pr_timestamp_t *timestamp = malloc(sizeof(*timestamp));
   if (!timestamp) {
-    perror("Couldn't allocate memory for timestamp\n"); // ERROR LEVEL
+    perror("Couldn't allocate memory for timestamp\n"); //ERROR LEVEL
     return NULL;
   }
   timestamp->has_value = true;
@@ -415,6 +415,18 @@ int pr_compare_entries_names(const char *name_x, const char *name_y) {
   return 0;
 }
 
+int pr_update_metric_family_name(char **cur_name, char *new_name) {
+  if (!*cur_name || strcmp(new_name, *cur_name) < 0) {
+    free(*cur_name);
+    *cur_name = strdup(new_name);
+    if (!*cur_name) {
+      perror("Couldn't allocate memory for new metric family name\n");
+      return EXIT_FAILURE;
+    }
+  }
+  return 0;
+}
+
 int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
   if (entry->tp != PR_COMMENT_ENTRY) {
     char *metric_family_name = pr_get_cur_family_name(item_list);
@@ -431,11 +443,9 @@ int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
     switch (entry->tp) {
     case (PR_METRIC_ENTRY): {
       pr_metric_entry_t *metric_entry = entry->body.metric;
-      if (!metric_family->name) {
-        metric_family->name = strdup(metric_entry->name);
-        if (!metric_family->name) {
-          return EXIT_FAILURE;
-        }
+      if (pr_update_metric_family_name(&metric_family->name,
+                                       metric_entry->name) != 0) {
+        return EXIT_FAILURE;
       }
       pr_metric_t *new_metric = pr_create_metric_from_entry(metric_entry);
       if (!new_metric) {
@@ -446,22 +456,18 @@ int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
     }
     case (PR_TYPE_ENTRY): {
       pr_type_entry_t *type_entry = entry->body.type;
-      if (!metric_family->name) {
-        metric_family->name = strdup(type_entry->name);
-        if (!metric_family->name) {
-          return EXIT_FAILURE;
-        }
+      if (pr_update_metric_family_name(&metric_family->name,
+                                       type_entry->name) != 0) {
+        return EXIT_FAILURE;
       }
       metric_family->tp = type_entry->tp;
       break;
     }
     case (PR_HELP_ENTRY): {
       pr_help_entry_t *help_entry = entry->body.help;
-      if (!metric_family->name) {
-        metric_family->name = strdup(help_entry->name);
-        if (!metric_family->name) {
-          return EXIT_FAILURE;
-        }
+      if (pr_update_metric_family_name(&metric_family->name,
+                                       help_entry->name) != 0) {
+        return EXIT_FAILURE;
       }
       if (!metric_family->help) {
         metric_family->help = strdup(help_entry->hint);
