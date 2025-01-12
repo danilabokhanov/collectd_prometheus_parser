@@ -1,11 +1,12 @@
 %{
+#include "ast.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "ast.h"
 
-extern int yylex();
+extern int yylex(void);
 void yyerror(const char* s);
 
 extern int yylineno;
@@ -46,38 +47,39 @@ pr_item_list_t* pr_items = NULL;
 
 %destructor {
     free($$);
-} <string>
+} NAME LABEL_VALUE COMMENT METRIC_HELP
 
 %destructor {
     free($$);
-} <timestamp>
+} timestamp
 
 %destructor {
     pr_delete_label_list($$);
-} <label>
+} label label_list inner_label_list
 
 %destructor {
     pr_delete_metric_entry($$);
-} <metric>
+} metric
 
 %destructor {
     pr_delete_comment_entry($$);
-} <comment>
+} comment
 
 %destructor {
     pr_delete_type_entry($$);
-} <type>
+} type
 
 %destructor {
     pr_delete_help_entry($$);
-} <help>
+} help
 
 %destructor {
     pr_delete_entry($$);
-} <entry>
+} entry
 
 
-%define parse.error detailed
+%error-verbose
+
 %%
 
 input:

@@ -122,7 +122,7 @@ pr_label_t *pr_create_label(char *name, char *value) {
   return label;
 }
 
-pr_timestamp_t *pr_create_empty_timestamp() {
+pr_timestamp_t *pr_create_empty_timestamp(void) {
   pr_timestamp_t *timestamp = malloc(sizeof(*timestamp));
   if (!timestamp) {
     perror("Couldn't allocate memory for timestamp\n"); // ERROR LEVEL
@@ -242,7 +242,7 @@ pr_help_entry_t *pr_create_help_entry(char *name, char *hint) {
   return help;
 }
 
-pr_item_list_t *pr_create_item_list() {
+pr_item_list_t *pr_create_item_list(void) {
   pr_item_list_t *item_list = malloc(sizeof(*item_list));
   if (!item_list) {
     perror("Couldn't allocate memory for item list\n"); // ERROR LEVEL
@@ -252,7 +252,7 @@ pr_item_list_t *pr_create_item_list() {
   return item_list;
 }
 
-pr_item_t *pr_create_metric_family_item() {
+pr_item_t *pr_create_metric_family_item(void) {
   pr_item_t *item = malloc(sizeof(*item));
   if (!item) {
     perror("Couldn't allocate memory for item\n"); // ERROR LEVEL
