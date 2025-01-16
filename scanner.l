@@ -15,6 +15,7 @@
 static YY_BUFFER_STATE lexer_buffer;
 
 void set_lexer_buffer(const char* str) {
+    yylineno = 1;
     if (lexer_buffer) {
         yy_delete_buffer(lexer_buffer);
     }

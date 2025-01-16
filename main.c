@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern int prparse(void);
 extern void set_lexer_buffer(const char *str);
 
 extern pr_item_list_t *pr_items;
