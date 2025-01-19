@@ -1,15 +1,16 @@
 %{
+#include "ast.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "ast.h"
 
-extern int prlex();
-void prerror(const char* s);
+extern int yylex(void);
+void yyerror(const char* s);
 
-extern int prlineno;
-extern char *prtext;
+extern int yylineno;
+extern char *yytext;
 pr_item_list_t* pr_items = NULL;
 
 %}
@@ -46,39 +47,39 @@ pr_item_list_t* pr_items = NULL;
 
 %destructor {
     free($$);
-} <string>
+} NAME LABEL_VALUE COMMENT METRIC_HELP
 
 %destructor {
     free($$);
-} <timestamp>
+} timestamp
 
 %destructor {
     pr_delete_label_list($$);
-} <label>
+} label label_list inner_label_list
 
 %destructor {
     pr_delete_metric_entry($$);
-} <metric>
+} metric
 
 %destructor {
     pr_delete_comment_entry($$);
-} <comment>
+} comment
 
 %destructor {
     pr_delete_type_entry($$);
-} <type>
+} type
 
 %destructor {
     pr_delete_help_entry($$);
-} <help>
+} help
 
 %destructor {
     pr_delete_entry($$);
-} <entry>
+} entry
 
 
-%define parse.error detailed
-%define api.prefix {pr}
+%error-verbose
+
 %%
 
 input:
@@ -240,6 +241,6 @@ help:
 
 %%
 
-void prerror(const char *s) {
-    fprintf(stderr, "Syntax error at line %d: %s near '%s'\n", prlineno, s, prtext); // ERROR LEVEL
+void yyerror(const char *s) {
+    fprintf(stderr, "Syntax error at line %d: %s near '%s'\n", yylineno, s, yytext); // ERROR LEVEL
 }

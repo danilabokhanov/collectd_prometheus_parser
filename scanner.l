@@ -1,6 +1,8 @@
 %{
 #include "ast.h"
-#include "parser.tab.h"
+
+#include "parser.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -13,6 +15,7 @@
 static YY_BUFFER_STATE lexer_buffer;
 
 void set_lexer_buffer(const char* str) {
+    yylineno = 1;
     if (lexer_buffer) {
         yy_delete_buffer(lexer_buffer);
     }
@@ -21,11 +24,11 @@ void set_lexer_buffer(const char* str) {
 }
 
 int lexer_error(const char* s, int status_code) {
-    fprintf(stderr, "Unrecognized token at line %d: %s", prlineno, s); // ERROR LEVEL
+    fprintf(stderr, "Unrecognized token at line %d: %s", yylineno, s); // ERROR LEVEL
     return status_code;
 }
 
-int prwrap(void) {
+int yywrap(void) {
     return 1;
 }
 
@@ -76,7 +79,8 @@ char* replace_escaped_chars(char* text, size_t text_size) {
 
 %}
 
-%option prefix="pr"
+%option noinput
+%option nounput
 
 %x COMMENT_TEXT
 %x TYPE
@@ -85,17 +89,17 @@ char* replace_escaped_chars(char* text, size_t text_size) {
 
 %%
 NaN {
-    prlval.number = NAN;
+    yylval.number = NAN;
     return FLOAT_NUMBER;
 }
 
 \+Inf {
-    prlval.number = INFINITY;
+    yylval.number = INFINITY;
     return FLOAT_NUMBER;
 }
 
 \-Inf {
-    prlval.number = -INFINITY;
+    yylval.number = -INFINITY;
     return FLOAT_NUMBER;
 }
 
@@ -111,37 +115,37 @@ NaN {
 
 <TYPE>"counter" {
     BEGIN(INITIAL);
-    prlval.metric_type = PR_COUNTER;
+    yylval.metric_type = PR_COUNTER;
     return METRIC_TYPE;
 }
 
 <TYPE>"gauge" {
     BEGIN(INITIAL);
-    prlval.metric_type = PR_GAUGE;
+    yylval.metric_type = PR_GAUGE;
     return METRIC_TYPE;
 }
 
 <TYPE>"histogram" {
     BEGIN(INITIAL);
-    prlval.metric_type = PR_HISTOGRAM;
+    yylval.metric_type = PR_HISTOGRAM;
     return METRIC_TYPE;
 }
 
 <TYPE>"summary" {
     BEGIN(INITIAL);
-    prlval.metric_type = PR_SUMMARY;
+    yylval.metric_type = PR_SUMMARY;
     return METRIC_TYPE;
 }
 
 <TYPE>"untyped" {
     BEGIN(INITIAL);
-    prlval.metric_type = PR_UNTYPED;
+    yylval.metric_type = PR_UNTYPED;
     return METRIC_TYPE;
 }
 
 <TYPE>[a-zA-Z_][a-zA-Z0-9_]* {
-    prlval.string = strdup(prtext);
-    if (!prlval.string) {
+    yylval.string = strdup(yytext);
+    if (!yylval.string) {
         return EXIT_FAILURE;
     }
     return NAME;
@@ -153,8 +157,8 @@ NaN {
 
 <COMMENT_TEXT>[^\n]* {
     BEGIN(INITIAL);
-    prlval.string = strndup(prtext + 1, strlen(prtext) - 1);
-    if (!prlval.string) {
+    yylval.string = strndup(yytext + 1, strlen(yytext) - 1);
+    if (!yylval.string) {
         return EXIT_FAILURE;
     }
     return COMMENT;
@@ -162,8 +166,8 @@ NaN {
 
 <HELP_NAME>[a-zA-Z_][a-zA-Z0-9_]* {
     BEGIN(HELP_HINT);
-    prlval.string = strdup(prtext);
-    if (!prlval.string) {
+    yylval.string = strdup(yytext);
+    if (!yylval.string) {
         return EXIT_FAILURE;
     }
     return NAME;
@@ -171,28 +175,28 @@ NaN {
 
 <HELP_HINT>[^\n]* {
     BEGIN(INITIAL);
-    prlval.string = strndup(prtext + 1, strlen(prtext) - 1);
-    if (!prlval.string) {
+    yylval.string = strndup(yytext + 1, strlen(yytext) - 1);
+    if (!yylval.string) {
         return EXIT_FAILURE;
     }
     return METRIC_HELP;
 }
 
 \"(\\[\"\\nrt]|[^\"\\])*\" {
-    prlval.string = replace_escaped_chars(prtext + 1, strlen(prtext) - 2);
-    if (prlval.string == NULL) {
+    yylval.string = replace_escaped_chars(yytext + 1, strlen(yytext) - 2);
+    if (yylval.string == NULL) {
         return lexer_error("Couldn't allocate memory for string without escaped chars\n", EXIT_FAILURE);
     }
     return LABEL_VALUE;
 }
 
 [+-]?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)? {
-    prlval.number = atof(prtext);
+    yylval.number = atof(yytext);
     return FLOAT_NUMBER;
 }
 
 [+-]?[0-9]+ {
-    prlval.integer = strtoll(prtext, NULL, 10);
+    yylval.integer = strtoll(yytext, NULL, 10);
     return INTEGER_NUMBER;
 }
 
@@ -213,8 +217,8 @@ NaN {
 }
 
 [a-zA-Z_][a-zA-Z0-9_]* {
-    prlval.string = strdup(prtext);
-    if (!prlval.string) {
+    yylval.string = strdup(yytext);
+    if (!yylval.string) {
         return EXIT_FAILURE;
     }
     return NAME;
@@ -223,7 +227,7 @@ NaN {
 [ \t\r]+ {}
 
 "\n" {
-    prlineno++;
+    yylineno++;
 }
 
 . {}

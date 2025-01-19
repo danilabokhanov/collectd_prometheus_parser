@@ -1,9 +1,10 @@
 #include "ast.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-const char * PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
+const char *PR_METRIC_SUFFIXES[] = {"", "_bucket", "_count", "_sum"};
 
 void pr_delete_label_list(pr_label_t *label_list) {
   if (!label_list) {
@@ -121,7 +122,7 @@ pr_label_t *pr_create_label(char *name, char *value) {
   return label;
 }
 
-pr_timestamp_t *pr_create_empty_timestamp() {
+pr_timestamp_t *pr_create_empty_timestamp(void) {
   pr_timestamp_t *timestamp = malloc(sizeof(*timestamp));
   if (!timestamp) {
     perror("Couldn't allocate memory for timestamp\n"); // ERROR LEVEL
@@ -175,7 +176,7 @@ pr_entry_t *pr_create_entry_from_comment(pr_comment_entry_t *comment) {
 pr_entry_t *pr_create_entry_from_type(pr_type_entry_t *type) {
   pr_entry_t *entry = malloc(sizeof(*entry));
   if (!entry) {
-    perror("Couldn't allocate memory for type entry\n"); // ERROR LEVEL
+    perror("Couldn't allocate memory for type entry");
     return NULL;
   }
   entry->tp = PR_TYPE_ENTRY;
@@ -241,7 +242,7 @@ pr_help_entry_t *pr_create_help_entry(char *name, char *hint) {
   return help;
 }
 
-pr_item_list_t *pr_create_item_list() {
+pr_item_list_t *pr_create_item_list(void) {
   pr_item_list_t *item_list = malloc(sizeof(*item_list));
   if (!item_list) {
     perror("Couldn't allocate memory for item list\n"); // ERROR LEVEL
@@ -251,7 +252,7 @@ pr_item_list_t *pr_create_item_list() {
   return item_list;
 }
 
-pr_item_t *pr_create_metric_family_item() {
+pr_item_t *pr_create_metric_family_item(void) {
   pr_item_t *item = malloc(sizeof(*item));
   if (!item) {
     perror("Couldn't allocate memory for item\n"); // ERROR LEVEL
@@ -327,13 +328,15 @@ pr_label_t *pr_copy_label_list(pr_label_t *label_list) {
   label_list_copy->name = strdup(label_list->name);
   if (!label_list_copy->name) {
     pr_delete_label_list(label_list_copy);
-    perror("Couldn't allocate memory for label list copy name\n"); // ERROR LEVEL
+    perror(
+        "Couldn't allocate memory for label list copy name\n"); // ERROR LEVEL
     return NULL;
   }
   label_list_copy->value = strdup(label_list->value);
   if (!label_list_copy->value) {
     pr_delete_label_list(label_list_copy);
-    perror("Couldn't allocate memory for label list copy value\n"); // ERROR LEVEL
+    perror(
+        "Couldn't allocate memory for label list copy value\n"); // ERROR LEVEL
     return NULL;
   }
   label_list_copy->next = pr_copy_label_list(label_list->next);
@@ -347,7 +350,8 @@ pr_label_t *pr_copy_label_list(pr_label_t *label_list) {
 pr_timestamp_t *pr_copy_timestamp(pr_timestamp_t *timestamp) {
   pr_timestamp_t *timestamp_copy = malloc(sizeof(*timestamp_copy));
   if (!timestamp_copy) {
-    perror("Couldn't allocate memory for label timestamp copy\n"); // ERROR LEVEL
+    perror(
+        "Couldn't allocate memory for label timestamp copy\n"); // ERROR LEVEL
     return NULL;
   }
   timestamp_copy->has_value = timestamp->has_value;
@@ -383,20 +387,27 @@ void pr_add_metric_to_metric_family(pr_metric_family_t *metric_family,
   metric_family->metric_list = metric;
 }
 
-int pr_compare_entries_names(const char* name_x, const char* name_y) {
-  for (size_t suff_x_id = 0; suff_x_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES); suff_x_id++) {
+int pr_compare_entries_names(const char *name_x, const char *name_y) {
+  size_t len_x = strlen(name_x);
+  size_t len_y = strlen(name_y);
+  for (size_t suff_x_id = 0;
+       suff_x_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES);
+       suff_x_id++) {
     size_t len_suff_x = strlen(PR_METRIC_SUFFIXES[suff_x_id]);
-    size_t len_x = strlen(name_x);
-    if (len_suff_x > len_x || strcmp(name_x + len_x - len_suff_x, PR_METRIC_SUFFIXES[suff_x_id])) {
+    if (len_suff_x > len_x ||
+        strcmp(name_x + len_x - len_suff_x, PR_METRIC_SUFFIXES[suff_x_id])) {
       continue;
     }
-    for (size_t suff_y_id = 0; suff_y_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES); suff_y_id++) {
+    for (size_t suff_y_id = 0;
+         suff_y_id * sizeof(PR_METRIC_SUFFIXES[0]) < sizeof(PR_METRIC_SUFFIXES);
+         suff_y_id++) {
       size_t len_suff_y = strlen(PR_METRIC_SUFFIXES[suff_y_id]);
-      size_t len_y = strlen(name_y);
-      if (len_suff_y > len_y || strcmp(name_y + len_y - len_suff_y, PR_METRIC_SUFFIXES[suff_y_id])) {
+      if (len_suff_y > len_y ||
+          strcmp(name_y + len_y - len_suff_y, PR_METRIC_SUFFIXES[suff_y_id])) {
         continue;
       }
-      if (len_x - len_suff_x == len_y - len_suff_y && !strncmp(name_x, name_y, len_x - len_suff_x)) {
+      if (len_x - len_suff_x == len_y - len_suff_y &&
+          !strncmp(name_x, name_y, len_x - len_suff_x)) {
         return 1;
       }
     }
@@ -404,10 +415,121 @@ int pr_compare_entries_names(const char* name_x, const char* name_y) {
   return 0;
 }
 
+int pr_update_metric_family_name(char **cur_name, char *new_name) {
+  if (!*cur_name || strcmp(new_name, *cur_name) < 0) {
+    free(*cur_name);
+    *cur_name = strdup(new_name);
+    if (!*cur_name) {
+      perror("Couldn't allocate memory for new metric family name\n");
+      return EXIT_FAILURE;
+    }
+  }
+  return 0;
+}
+
+int pr_metric_has_label_name(pr_metric_t *metric, const char *label_name) {
+  pr_label_t *cur_label = metric->labels;
+  while (cur_label) {
+    if (strcmp(cur_label->name, label_name) == 0) {
+      return 1;
+    }
+    cur_label = cur_label->next;
+  }
+  return 0;
+}
+
+int pr_create_label_and_add_to_metric(pr_metric_t *metric,
+                                      const char *label_name,
+                                      const char *label_value) {
+  char *label_name_cp = strdup(label_name);
+  if (!label_name_cp) {
+    perror("Couldn't allocate memory for label\n");
+    return EXIT_FAILURE;
+  }
+  char *label_value_cp = strdup(label_value);
+  if (!label_value_cp) {
+    free(label_name_cp);
+    perror("Couldn't allocate memory for label\n");
+    return EXIT_FAILURE;
+  }
+  pr_label_t *new_label = pr_create_label(label_name_cp, label_value_cp);
+  if (!new_label) {
+    free(label_name_cp);
+    free(label_value_cp);
+    return EXIT_FAILURE;
+  }
+  metric->labels = pr_add_label_to_list(metric->labels, new_label);
+  return 0;
+}
+
+int pr_normalize_metric_fam(pr_metric_family_t *fam) {
+  if (fam->tp != PR_SUMMARY && fam->tp != PR_HISTOGRAM) {
+    return 0;
+  }
+  pr_metric_t *cur_metric = fam->metric_list;
+  if (!cur_metric || !cur_metric->next) {
+    perror("Summary and histogram must have at least two entries\n");
+    return EXIT_FAILURE;
+  }
+
+  int is_bucket_prev = 1;
+  while (cur_metric) {
+    switch (fam->tp) {
+    case (PR_SUMMARY): {
+      if (pr_metric_has_label_name(cur_metric, "quantile")) {
+        is_bucket_prev = 1;
+      } else if (is_bucket_prev) {
+        if (pr_create_label_and_add_to_metric(cur_metric, "m_suff", "sum") !=
+            0) {
+          return EXIT_FAILURE;
+        }
+        is_bucket_prev = 0;
+      } else {
+        if (pr_create_label_and_add_to_metric(cur_metric, "m_suff", "count") !=
+            0) {
+          return EXIT_FAILURE;
+        }
+        is_bucket_prev = 0;
+      }
+      break;
+    }
+    case (PR_HISTOGRAM): {
+      if (pr_metric_has_label_name(cur_metric, "le")) {
+        if (pr_create_label_and_add_to_metric(cur_metric, "m_suff", "bucket") !=
+            0) {
+          return EXIT_FAILURE;
+        }
+        is_bucket_prev = 1;
+      } else if (is_bucket_prev) {
+        if (pr_create_label_and_add_to_metric(cur_metric, "m_suff", "sum") !=
+            0) {
+          return EXIT_FAILURE;
+        }
+        is_bucket_prev = 0;
+      } else {
+        if (pr_create_label_and_add_to_metric(cur_metric, "m_suff", "count") !=
+            0) {
+          return EXIT_FAILURE;
+        }
+        is_bucket_prev = 0;
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+    }
+    cur_metric = cur_metric->next;
+  }
+  return 0;
+}
+
 int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
   if (entry->tp != PR_COMMENT_ENTRY) {
     char *metric_family_name = pr_get_cur_family_name(item_list);
-    if (!metric_family_name || !pr_compare_entries_names(metric_family_name, entry->body.metric->name)) {
+    if (!metric_family_name ||
+        !pr_compare_entries_names(metric_family_name,
+                                  entry->body.metric->name)) {
       pr_item_t *new_metric_family = pr_create_metric_family_item();
       if (!new_metric_family) {
         return EXIT_FAILURE;
@@ -418,11 +540,9 @@ int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
     switch (entry->tp) {
     case (PR_METRIC_ENTRY): {
       pr_metric_entry_t *metric_entry = entry->body.metric;
-      if (!metric_family->name) {
-        metric_family->name = strdup(metric_entry->name);
-        if (!metric_family->name) {
-          return EXIT_FAILURE;
-        }
+      if (pr_update_metric_family_name(&metric_family->name,
+                                       metric_entry->name) != 0) {
+        return EXIT_FAILURE;
       }
       pr_metric_t *new_metric = pr_create_metric_from_entry(metric_entry);
       if (!new_metric) {
@@ -433,22 +553,21 @@ int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry) {
     }
     case (PR_TYPE_ENTRY): {
       pr_type_entry_t *type_entry = entry->body.type;
-      if (!metric_family->name) {
-        metric_family->name = strdup(type_entry->name);
-        if (!metric_family->name) {
-          return EXIT_FAILURE;
-        }
+      if (pr_update_metric_family_name(&metric_family->name,
+                                       type_entry->name) != 0) {
+        return EXIT_FAILURE;
       }
       metric_family->tp = type_entry->tp;
+      if (pr_normalize_metric_fam(metric_family) != 0) {
+        return EXIT_FAILURE;
+      }
       break;
     }
     case (PR_HELP_ENTRY): {
       pr_help_entry_t *help_entry = entry->body.help;
-      if (!metric_family->name) {
-        metric_family->name = strdup(help_entry->name);
-        if (!metric_family->name) {
-          return EXIT_FAILURE;
-        }
+      if (pr_update_metric_family_name(&metric_family->name,
+                                       help_entry->name) != 0) {
+        return EXIT_FAILURE;
       }
       if (!metric_family->help) {
         metric_family->help = strdup(help_entry->hint);

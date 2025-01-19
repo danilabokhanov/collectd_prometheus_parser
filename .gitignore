@@ -3,4 +3,9 @@
 *.yy.c
 *pr.c
 lexer.c
+scanner.c
+parser.h
+parser.c
 *.out
+parser
+__pycache__

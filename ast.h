@@ -4,7 +4,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum { PR_COUNTER, PR_GAUGE, PR_HISTOGRAM, PR_SUMMARY, PR_UNTYPED } pr_metric_type_t;
+typedef enum {
+  PR_COUNTER,
+  PR_GAUGE,
+  PR_HISTOGRAM,
+  PR_SUMMARY,
+  PR_UNTYPED
+} pr_metric_type_t;
 
 typedef enum {
   PR_METRIC_ENTRY,
@@ -91,7 +97,7 @@ typedef struct pr_item_list_s {
 } pr_item_list_t;
 
 pr_label_t *pr_create_label(char *name, char *value);
-pr_timestamp_t *pr_create_empty_timestamp();
+pr_timestamp_t *pr_create_empty_timestamp(void);
 pr_timestamp_t *pr_create_value_timestamp(int64_t value);
 pr_label_t *pr_add_label_to_list(pr_label_t *list, pr_label_t *label);
 pr_metric_entry_t *pr_create_metric_entry(char *name, pr_label_t *labels,
@@ -104,9 +110,9 @@ pr_entry_t *pr_create_entry_from_metric(pr_metric_entry_t *metric);
 pr_entry_t *pr_create_entry_from_comment(pr_comment_entry_t *comment);
 pr_entry_t *pr_create_entry_from_type(pr_type_entry_t *node);
 pr_entry_t *pr_create_entry_from_help(pr_help_entry_t *help);
-pr_item_t *pr_create_metric_family_item();
+pr_item_t *pr_create_metric_family_item(void);
 pr_item_t *pr_create_comment_item(char *text);
-pr_item_list_t *pr_create_item_list();
+pr_item_list_t *pr_create_item_list(void);
 int pr_add_entry_to_item_list(pr_item_list_t *item_list, pr_entry_t *entry);
 
 void pr_delete_label_list(pr_label_t *label_list);
