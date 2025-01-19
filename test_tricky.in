@@ -1,8 +1,0 @@
-something_weird{problem="division by zero"} -Inf -3982045
-rpc_duration_seconds_sum 1.7560473e+07
-http_request_duration_seconds_bucket{le="+Inf"} 144320
-something_weird2{problem="division by zero"} NaN -3982045
-# TYPE http_histogram histogram
-# TYPE http_requests_total counter
-# HELP http_requests_total The total number of HTTP requests.
-msdos_file_access_time_seconds{path="C:\\DIR\\FILE.TXT",error="Cannot find file:\n\"FILE.TXT\""} 1.458255915e9

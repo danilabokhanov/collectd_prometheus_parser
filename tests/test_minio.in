@@ -1,0 +1,516 @@
+# HELP target_info Target metadata
+# TYPE target_info gauge
+target_info{job="unknown_service:collectd",instance="",host_id="36149f49f0e74695b83ac70f1f673c5a",host_name="user-System-Product-Name"} 1
+
+# HELP minio_audit_failed_messages_total Total number of messages that failed to send since start
+# TYPE minio_audit_failed_messages_total counter
+minio_audit_failed_messages_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000",target_id="sys_console_0"} 0 1737292715878
+
+# HELP minio_audit_target_queue_length Number of unsent messages in queue for target
+# TYPE minio_audit_target_queue_length gauge
+minio_audit_target_queue_length{job="unknown_service:collectd",instance="",server="127.0.0.1:9000",target_id="sys_console_0"} 0 1737292715878
+
+# HELP minio_audit_total_messages_total Total number of messages sent since start
+# TYPE minio_audit_total_messages_total counter
+minio_audit_total_messages_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000",target_id="sys_console_0"} 0 1737292715878
+
+# HELP minio_cluster_bucket_total Total number of buckets in the cluster
+# TYPE minio_cluster_bucket_total gauge
+minio_cluster_bucket_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_cluster_capacity_raw_free_bytes Total free capacity online in the cluster
+# TYPE minio_cluster_capacity_raw_free_bytes gauge
+minio_cluster_capacity_raw_free_bytes{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 46783959040 1737292715878
+
+# HELP minio_cluster_capacity_raw_total_bytes Total capacity online in the cluster
+# TYPE minio_cluster_capacity_raw_total_bytes gauge
+minio_cluster_capacity_raw_total_bytes{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 204489420800 1737292715878
+
+# HELP minio_cluster_capacity_usable_free_bytes Total free usable capacity online in the cluster
+# TYPE minio_cluster_capacity_usable_free_bytes gauge
+minio_cluster_capacity_usable_free_bytes{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 46783959040 1737292715878
+
+# HELP minio_cluster_capacity_usable_total_bytes Total usable capacity online in the cluster
+# TYPE minio_cluster_capacity_usable_total_bytes gauge
+minio_cluster_capacity_usable_total_bytes{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 204489420800 1737292715878
+
+# HELP minio_cluster_drive_offline_total Total drives offline in this cluster
+# TYPE minio_cluster_drive_offline_total gauge
+minio_cluster_drive_offline_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_drive_online_total Total drives online in this cluster
+# TYPE minio_cluster_drive_online_total gauge
+minio_cluster_drive_online_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_cluster_drive_total Total drives in this cluster
+# TYPE minio_cluster_drive_total gauge
+minio_cluster_drive_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_cluster_health_erasure_set_healing_drives Get the count of healing drives of this erasure set
+# TYPE minio_cluster_health_erasure_set_healing_drives gauge
+minio_cluster_health_erasure_set_healing_drives{job="unknown_service:collectd",instance="",pool="0",server="127.0.0.1:9000",set="0"} 0 1737292715878
+
+# HELP minio_cluster_health_erasure_set_online_drives Get the count of the online drives in this erasure set
+# TYPE minio_cluster_health_erasure_set_online_drives gauge
+minio_cluster_health_erasure_set_online_drives{job="unknown_service:collectd",instance="",pool="0",server="127.0.0.1:9000",set="0"} 1 1737292715878
+
+# HELP minio_cluster_health_erasure_set_read_quorum Get the read quorum for this erasure set
+# TYPE minio_cluster_health_erasure_set_read_quorum gauge
+minio_cluster_health_erasure_set_read_quorum{job="unknown_service:collectd",instance="",pool="0",server="127.0.0.1:9000",set="0"} 1 1737292715878
+
+# HELP minio_cluster_health_erasure_set_status Get current health status for this erasure set
+# TYPE minio_cluster_health_erasure_set_status gauge
+minio_cluster_health_erasure_set_status{job="unknown_service:collectd",instance="",pool="0",server="127.0.0.1:9000",set="0"} 1 1737292715878
+
+# HELP minio_cluster_health_erasure_set_write_quorum Get the write quorum for this erasure set
+# TYPE minio_cluster_health_erasure_set_write_quorum gauge
+minio_cluster_health_erasure_set_write_quorum{job="unknown_service:collectd",instance="",pool="0",server="127.0.0.1:9000",set="0"} 1 1737292715878
+
+# HELP minio_cluster_health_status Get current cluster health status
+# TYPE minio_cluster_health_status gauge
+minio_cluster_health_status{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_cluster_nodes_offline_total Total number of MinIO nodes offline
+# TYPE minio_cluster_nodes_offline_total gauge
+minio_cluster_nodes_offline_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_nodes_online_total Total number of MinIO nodes online
+# TYPE minio_cluster_nodes_online_total gauge
+minio_cluster_nodes_online_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_cluster_objects_size_distribution Distribution of object sizes across a cluster
+# TYPE minio_cluster_objects_size_distribution gauge
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_1024B_AND_1_MB",server="127.0.0.1:9000"} 23 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_1024_B_AND_64_KB",server="127.0.0.1:9000"} 1 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_10_MB_AND_64_MB",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_128_MB_AND_512_MB",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_1_MB_AND_10_MB",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_256_KB_AND_512_KB",server="127.0.0.1:9000"} 7 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_512_KB_AND_1_MB",server="127.0.0.1:9000"} 8 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_64_KB_AND_256_KB",server="127.0.0.1:9000"} 7 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_64_MB_AND_128_MB",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="GREATER_THAN_512_MB",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_size_distribution{job="unknown_service:collectd",instance="",range="LESS_THAN_1024_B",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_objects_version_distribution Distribution of object versions across a cluster
+# TYPE minio_cluster_objects_version_distribution gauge
+minio_cluster_objects_version_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_1000_AND_10000",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_version_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_100_AND_1000",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_version_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_10_AND_100",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_version_distribution{job="unknown_service:collectd",instance="",range="BETWEEN_2_AND_10",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_version_distribution{job="unknown_service:collectd",instance="",range="GREATER_THAN_10000",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_version_distribution{job="unknown_service:collectd",instance="",range="SINGLE_VERSION",server="127.0.0.1:9000"} 0 1737292715878
+minio_cluster_objects_version_distribution{job="unknown_service:collectd",instance="",range="UNVERSIONED",server="127.0.0.1:9000"} 23 1737292715878
+
+# HELP minio_cluster_usage_deletemarker_total Total number of delete markers in a cluster
+# TYPE minio_cluster_usage_deletemarker_total gauge
+minio_cluster_usage_deletemarker_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_usage_object_total Total number of objects in a cluster
+# TYPE minio_cluster_usage_object_total gauge
+minio_cluster_usage_object_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 23 1737292715878
+
+# HELP minio_cluster_usage_total_bytes Total cluster usage in bytes
+# TYPE minio_cluster_usage_total_bytes gauge
+minio_cluster_usage_total_bytes{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 10182782 1737292715878
+
+# HELP minio_cluster_usage_version_total Total number of versions (includes delete marker) in a cluster
+# TYPE minio_cluster_usage_version_total gauge
+minio_cluster_usage_version_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_webhook_failed_messages_total Number of messages that failed to send
+# TYPE minio_cluster_webhook_failed_messages_total counter
+minio_cluster_webhook_failed_messages_total{job="unknown_service:collectd",instance="",name="console+http",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_webhook_online Is the webhook online?
+# TYPE minio_cluster_webhook_online gauge
+minio_cluster_webhook_online{job="unknown_service:collectd",instance="",name="console+http",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_cluster_webhook_queue_length Webhook queue length
+# TYPE minio_cluster_webhook_queue_length gauge
+minio_cluster_webhook_queue_length{job="unknown_service:collectd",instance="",name="console+http",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_webhook_total_messages_total Total number of messages sent to this target
+# TYPE minio_cluster_webhook_total_messages_total counter
+minio_cluster_webhook_total_messages_total{job="unknown_service:collectd",instance="",name="console+http",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_cluster_write_quorum Maximum write quorum across all pools and sets
+# TYPE minio_cluster_write_quorum gauge
+minio_cluster_write_quorum{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_node_file_descriptor_limit_total Limit on total number of open file descriptors for the MinIO Server process
+# TYPE minio_node_file_descriptor_limit_total gauge
+minio_node_file_descriptor_limit_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1048576 1737292715878
+
+# HELP minio_node_file_descriptor_open_total Total number of open file descriptors by the MinIO Server process
+# TYPE minio_node_file_descriptor_open_total gauge
+minio_node_file_descriptor_open_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 13 1737292715878
+
+# HELP minio_node_go_routine_total Total number of go routines running
+# TYPE minio_node_go_routine_total gauge
+minio_node_go_routine_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 497 1737292715878
+
+# HELP minio_node_ilm_expiry_missed_freeversions_total Number of free versions expiry missed due to busy system
+# TYPE minio_node_ilm_expiry_missed_freeversions_total counter
+minio_node_ilm_expiry_missed_freeversions_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_node_ilm_expiry_missed_tasks_total Number of object version expiry missed due to busy system
+# TYPE minio_node_ilm_expiry_missed_tasks_total counter
+minio_node_ilm_expiry_missed_tasks_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_node_ilm_expiry_missed_tierjournal_tasks_total Number of tier journal entries cleanup missed due to busy system
+# TYPE minio_node_ilm_expiry_missed_tierjournal_tasks_total counter
+minio_node_ilm_expiry_missed_tierjournal_tasks_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_node_ilm_expiry_num_workers Number of workers expiring object versions currently
+# TYPE minio_node_ilm_expiry_num_workers gauge
+minio_node_ilm_expiry_num_workers{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 100 1737292715878
+
+# HELP minio_node_ilm_expiry_pending_tasks Number of pending ILM expiry tasks in the queue
+# TYPE minio_node_ilm_expiry_pending_tasks gauge
+minio_node_ilm_expiry_pending_tasks{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_node_ilm_transition_active_tasks Number of active ILM transition tasks
+# TYPE minio_node_ilm_transition_active_tasks gauge
+minio_node_ilm_transition_active_tasks{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_node_ilm_transition_missed_immediate_tasks Number of missed immediate ILM transition tasks
+# TYPE minio_node_ilm_transition_missed_immediate_tasks gauge
+minio_node_ilm_transition_missed_immediate_tasks{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_node_ilm_transition_pending_tasks Number of pending ILM transition tasks in the queue
+# TYPE minio_node_ilm_transition_pending_tasks gauge
+minio_node_ilm_transition_pending_tasks{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_node_ilm_versions_scanned_total Total number of object versions checked for ilm actions since server uptime
+# TYPE minio_node_ilm_versions_scanned_total counter
+minio_node_ilm_versions_scanned_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 4111 1737292715878
+
+# HELP minio_node_io_rchar_bytes_total Total bytes read by the process from the underlying storage system including cache, /proc/[pid]/io rchar
+# TYPE minio_node_io_rchar_bytes_total counter
+minio_node_io_rchar_bytes_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1763641748 1737292715878
+
+# HELP minio_node_io_read_bytes_total Total bytes read by the process from the underlying storage system, /proc/[pid]/io read_bytes
+# TYPE minio_node_io_read_bytes_total counter
+minio_node_io_read_bytes_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 121319424 1737292715878
+
+# HELP minio_node_io_wchar_bytes_total Total bytes written by the process to the underlying storage system including page cache, /proc/[pid]/io wchar
+# TYPE minio_node_io_wchar_bytes_total counter
+minio_node_io_wchar_bytes_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 2586201177 1737292715878
+
+# HELP minio_node_io_write_bytes_total Total bytes written by the process to the underlying storage system, /proc/[pid]/io write_bytes
+# TYPE minio_node_io_write_bytes_total counter
+minio_node_io_write_bytes_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1451704320 1737292715878
+
+# HELP minio_node_process_cpu_total_seconds_total Total user and system CPU time spent in seconds
+# TYPE minio_node_process_cpu_total_seconds_total counter
+minio_node_process_cpu_total_seconds_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 294.64 1737292715878
+
+# HELP minio_node_process_resident_memory_bytes Resident memory size in bytes
+# TYPE minio_node_process_resident_memory_bytes gauge
+minio_node_process_resident_memory_bytes{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 279818240 1737292715878
+
+# HELP minio_node_process_starttime_seconds Start time for MinIO process per node, time in seconds since Unix epoc
+# TYPE minio_node_process_starttime_seconds gauge
+minio_node_process_starttime_seconds{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1737212982.28 1737292715878
+
+# HELP minio_node_process_uptime_seconds Uptime for MinIO process per node in seconds
+# TYPE minio_node_process_uptime_seconds gauge
+minio_node_process_uptime_seconds{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 79730.661788513 1737292715878
+
+# HELP minio_node_scanner_bucket_scans_finished_total Total number of bucket scans finished since server uptime
+# TYPE minio_node_scanner_bucket_scans_finished_total counter
+minio_node_scanner_bucket_scans_finished_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 544 1737292715878
+
+# HELP minio_node_scanner_bucket_scans_started_total Total number of bucket scans started since server uptime
+# TYPE minio_node_scanner_bucket_scans_started_total counter
+minio_node_scanner_bucket_scans_started_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 544 1737292715878
+
+# HELP minio_node_scanner_directories_scanned_total Total number of directories scanned since server uptime
+# TYPE minio_node_scanner_directories_scanned_total counter
+minio_node_scanner_directories_scanned_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 7650 1737292715878
+
+# HELP minio_node_scanner_objects_scanned_total Total number of unique objects scanned since server uptime
+# TYPE minio_node_scanner_objects_scanned_total counter
+minio_node_scanner_objects_scanned_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 4111 1737292715878
+
+# HELP minio_node_scanner_versions_scanned_total Total number of object versions scanned since server uptime
+# TYPE minio_node_scanner_versions_scanned_total counter
+minio_node_scanner_versions_scanned_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 4111 1737292715878
+
+# HELP minio_node_syscall_read_total_total Total read SysCalls to the kernel. /proc/[pid]/io syscr
+# TYPE minio_node_syscall_read_total_total counter
+minio_node_syscall_read_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 411373 1737292715878
+
+# HELP minio_node_syscall_write_total_total Total write SysCalls to the kernel. /proc/[pid]/io syscw
+# TYPE minio_node_syscall_write_total_total counter
+minio_node_syscall_write_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 343605 1737292715878
+
+# HELP minio_notify_current_send_in_progress Number of concurrent async Send calls active to all targets (deprecated, please use 'minio_notify_target_current_send_in_progress' instead)
+# TYPE minio_notify_current_send_in_progress gauge
+minio_notify_current_send_in_progress{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_notify_events_errors_total_total Events that were failed to be sent to the targets (deprecated, please use 'minio_notify_target_failed_events' instead)
+# TYPE minio_notify_events_errors_total_total counter
+minio_notify_events_errors_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_notify_events_sent_total_total Total number of events sent to the targets (deprecated, please use 'minio_notify_target_total_events' instead)
+# TYPE minio_notify_events_sent_total_total counter
+minio_notify_events_sent_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_notify_events_skipped_total_total Events that were skipped to be sent to the targets due to the in-memory queue being full
+# TYPE minio_notify_events_skipped_total_total counter
+minio_notify_events_skipped_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715878
+
+# HELP minio_s3_requests_4xx_errors_total_total Total number of S3 requests with (4xx) errors
+# TYPE minio_s3_requests_4xx_errors_total_total counter
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="deletebucket",server="127.0.0.1:9000"} 4 1737292715878
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketencryption",server="127.0.0.1:9000"} 15 1737292715878
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketlocation",server="127.0.0.1:9000"} 1 1737292715878
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",server="127.0.0.1:9000"} 67 1737292715878
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketpolicy",server="127.0.0.1:9000"} 90 1737292715878
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",server="127.0.0.1:9000"} 17 1737292715878
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="getbuckettagging",server="127.0.0.1:9000"} 102 1737292715878
+minio_s3_requests_4xx_errors_total_total{job="unknown_service:collectd",instance="",api="listobjectsv2",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_s3_requests_errors_total_total Total number of S3 requests with (4xx and 5xx) errors
+# TYPE minio_s3_requests_errors_total_total counter
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="deletebucket",server="127.0.0.1:9000"} 4 1737292715878
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketencryption",server="127.0.0.1:9000"} 15 1737292715878
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketlocation",server="127.0.0.1:9000"} 1 1737292715878
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",server="127.0.0.1:9000"} 67 1737292715878
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketpolicy",server="127.0.0.1:9000"} 90 1737292715878
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",server="127.0.0.1:9000"} 17 1737292715878
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="getbuckettagging",server="127.0.0.1:9000"} 102 1737292715878
+minio_s3_requests_errors_total_total{job="unknown_service:collectd",instance="",api="listobjectsv2",server="127.0.0.1:9000"} 1 1737292715878
+
+# HELP minio_s3_requests_incoming_total Total number of incoming S3 requests
+# TYPE minio_s3_requests_incoming_total gauge
+minio_s3_requests_incoming_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 2 1737292715879
+
+# HELP minio_s3_requests_inflight_total Total number of S3 requests currently in flight
+# TYPE minio_s3_requests_inflight_total gauge
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="deletebucket",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="deletemultipleobjects",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="deleteobject",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbucketencryption",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbucketlocation",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbucketnotification",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbucketpolicy",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbuckettagging",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="getbucketversioning",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="headbucket",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="headobject",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="listobjectsv2",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="putbucket",server="127.0.0.1:9000"} 0 1737292715879
+minio_s3_requests_inflight_total{job="unknown_service:collectd",instance="",api="putobject",server="127.0.0.1:9000"} 0 1737292715879
+
+# HELP minio_s3_requests_rejected_auth_total_total Total number of S3 requests rejected for auth failure
+# TYPE minio_s3_requests_rejected_auth_total_total counter
+minio_s3_requests_rejected_auth_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715879
+
+# HELP minio_s3_requests_rejected_header_total_total Total number of S3 requests rejected for invalid header
+# TYPE minio_s3_requests_rejected_header_total_total counter
+minio_s3_requests_rejected_header_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715879
+
+# HELP minio_s3_requests_rejected_invalid_total_total Total number of invalid S3 requests
+# TYPE minio_s3_requests_rejected_invalid_total_total counter
+minio_s3_requests_rejected_invalid_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715879
+
+# HELP minio_s3_requests_rejected_timestamp_total_total Total number of S3 requests rejected for invalid timestamp
+# TYPE minio_s3_requests_rejected_timestamp_total_total counter
+minio_s3_requests_rejected_timestamp_total_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715879
+
+# HELP minio_s3_requests_total_total Total number of S3 requests
+# TYPE minio_s3_requests_total_total counter
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="deletebucket",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="deletemultipleobjects",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="deleteobject",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbucketencryption",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbucketlocation",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbucketnotification",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbucketpolicy",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbuckettagging",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="getbucketversioning",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="headbucket",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="headobject",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="listobjectsv2",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="putbucket",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_total_total{job="unknown_service:collectd",instance="",api="putobject",server="127.0.0.1:9000"} 2713 1737292715879
+
+# HELP minio_s3_requests_ttfb_seconds_distribution Distribution of time to first byte across API calls
+# TYPE minio_s3_requests_ttfb_seconds_distribution gauge
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="+Inf",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="0.050",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="0.100",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="0.250",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="0.500",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="1.000",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="10.000",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="2.500",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletebucket",le="5.000",server="127.0.0.1:9000"} 5 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="+Inf",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="0.050",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="0.100",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="0.250",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="0.500",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="1.000",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="10.000",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="2.500",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deletemultipleobjects",le="5.000",server="127.0.0.1:9000"} 166 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="+Inf",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="0.050",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="0.100",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="0.250",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="0.500",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="1.000",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="10.000",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="2.500",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="deleteobject",le="5.000",server="127.0.0.1:9000"} 2520 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="+Inf",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="0.050",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="0.100",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="0.250",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="0.500",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="1.000",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="10.000",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="2.500",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketencryption",le="5.000",server="127.0.0.1:9000"} 15 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="+Inf",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="0.050",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="0.100",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="0.250",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="0.500",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="1.000",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="10.000",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="2.500",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketlocation",le="5.000",server="127.0.0.1:9000"} 289 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="+Inf",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="0.050",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="0.100",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="0.250",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="0.500",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="1.000",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="10.000",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="2.500",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketnotification",le="5.000",server="127.0.0.1:9000"} 4 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="+Inf",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="0.050",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="0.100",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="0.250",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="0.500",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="1.000",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="10.000",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="2.500",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketobjectlockconfig",le="5.000",server="127.0.0.1:9000"} 67 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="+Inf",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="0.050",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="0.100",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="0.250",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="0.500",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="1.000",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="10.000",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="2.500",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketpolicy",le="5.000",server="127.0.0.1:9000"} 104 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="+Inf",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="0.050",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="0.100",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="0.250",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="0.500",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="1.000",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="10.000",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="2.500",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketreplicationconfig",le="5.000",server="127.0.0.1:9000"} 17 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="+Inf",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="0.050",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="0.100",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="0.250",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="0.500",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="1.000",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="10.000",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="2.500",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbuckettagging",le="5.000",server="127.0.0.1:9000"} 102 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="+Inf",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="0.050",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="0.100",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="0.250",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="0.500",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="1.000",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="10.000",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="2.500",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="getbucketversioning",le="5.000",server="127.0.0.1:9000"} 40 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="+Inf",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="0.050",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="0.100",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="0.250",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="0.500",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="1.000",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="10.000",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="2.500",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headbucket",le="5.000",server="127.0.0.1:9000"} 6 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="+Inf",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="0.050",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="0.100",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="0.250",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="0.500",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="1.000",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="10.000",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="2.500",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="headobject",le="5.000",server="127.0.0.1:9000"} 3 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="+Inf",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="0.050",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="0.100",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="0.250",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="0.500",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="1.000",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="10.000",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="2.500",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="listobjectsv2",le="5.000",server="127.0.0.1:9000"} 2550 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="+Inf",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="0.050",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="0.100",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="0.250",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="0.500",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="1.000",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="10.000",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="2.500",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putbucket",le="5.000",server="127.0.0.1:9000"} 1 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="+Inf",server="127.0.0.1:9000"} 2712 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="0.050",server="127.0.0.1:9000"} 2693 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="0.100",server="127.0.0.1:9000"} 2701 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="0.250",server="127.0.0.1:9000"} 2709 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="0.500",server="127.0.0.1:9000"} 2712 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="1.000",server="127.0.0.1:9000"} 2712 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="10.000",server="127.0.0.1:9000"} 2712 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="2.500",server="127.0.0.1:9000"} 2712 1737292715879
+minio_s3_requests_ttfb_seconds_distribution{job="unknown_service:collectd",instance="",api="putobject",le="5.000",server="127.0.0.1:9000"} 2712 1737292715879
+
+# HELP minio_s3_requests_waiting_total Total number of S3 requests in the waiting queue
+# TYPE minio_s3_requests_waiting_total gauge
+minio_s3_requests_waiting_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 0 1737292715880
+
+# HELP minio_s3_traffic_received_bytes_total Total number of s3 bytes received
+# TYPE minio_s3_traffic_received_bytes_total counter
+minio_s3_traffic_received_bytes_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 1406335895 1737292715880
+
+# HELP minio_s3_traffic_sent_bytes_total Total number of s3 bytes sent
+# TYPE minio_s3_traffic_sent_bytes_total counter
+minio_s3_traffic_sent_bytes_total{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 35683943 1737292715880
+
+# HELP minio_software_commit_info Git commit hash for the MinIO release
+# TYPE minio_software_commit_info gauge
+minio_software_commit_info{job="unknown_service:collectd",instance="",commit="16f8cf1c52f0a77eeb8f7565aaf7f7df12454583",server="127.0.0.1:9000"} 0 1737292715880
+
+# HELP minio_software_version_info MinIO Release tag for the server
+# TYPE minio_software_version_info gauge
+minio_software_version_info{job="unknown_service:collectd",instance="",server="127.0.0.1:9000",version="2024-12-18T13:15:44Z"} 0 1737292715880
+
+# HELP minio_usage_last_activity_nano_seconds Time elapsed (in nano seconds) since last scan activity
+# TYPE minio_usage_last_activity_nano_seconds gauge
+minio_usage_last_activity_nano_seconds{job="unknown_service:collectd",instance="",server="127.0.0.1:9000"} 16585536623 1737292715880
+
+# collectd/write_prometheus 6.0.0.rc3.51.g3648a34+ at user-System-Product-Name
